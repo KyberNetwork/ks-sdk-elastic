@@ -1,0 +1,75 @@
+Arguments: 
+  /Users/daikadicode/.nvm/versions/node/v16.13.1/bin/node /usr/local/Cellar/yarn/1.22.4/libexec/bin/yarn.js install
+
+PATH: 
+  /Users/daikadicode/.nvm/versions/node/v16.13.1/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/Users/daikadicode/.cargo/bin:/Users/daikadicode/.nvm/versions/node/v10.16.0/bin:/Users/daikadicode/.gvm/bin:/Users/daikadicode/.cargo/bin:/Users/daikadicode/.rvm/gems/ruby-2.3.1/bin:/Users/daikadicode/.rvm/gems/ruby-2.3.1@global/bin:/Users/daikadicode/.rvm/rubies/ruby-2.3.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/eosio/bin:/usr/local/lib/node_modules/node/bin:/usr/local/go/bin:/usr/local/MacGPG2/bin:/Library/Apple/usr/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/Users/daikadicode/.cargo/bin:/Users/daikadicode/.nvm/versions/node/v10.16.0/bin:/Users/daikadicode/.rvm/gems/ruby-2.3.1/bin:/Users/daikadicode/.rvm/gems/ruby-2.3.1@global/bin:/Users/daikadicode/.rvm/rubies/ruby-2.3.1/bin:/Users/daikadicode/.rvm/bin:/Users/daikadicode/.rvm/bin
+
+Yarn version: 
+  1.22.4
+
+Node version: 
+  16.13.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@unisxzczwap%2fv3-core: Not found
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:66987:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:140748:22)
+      at Request.emit (node:events:390:28)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141720:10)
+      at Request.emit (node:events:390:28)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141642:12)
+      at Object.onceWrapper (node:events:509:28)
+      at IncomingMessage.emit (node:events:402:35)
+      at endReadableNT (node:internal/streams/readable:1343:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "@vutien/dmm-v3-sdk",
+    "version": "0.0.1",
+    "repository": "git@github.com:tien7668/dmm-v3-sdk.git",
+    "author": "tien7668 <tien7668@gmail.com>",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "description": "🛠 An CORE SDK for building DMM SDK ver 1 + 2",
+    "typings": "dist/index.d.ts",
+    "files": [
+      "dist"
+    ],
+    "module": "dist/sdk.esm.js",
+    "scripts": {
+      "lint": "tsdx lint src test",
+      "build": "tsdx build",
+      "start": "tsdx watch",
+      "test": "tsdx test",
+      "prepublishOnly": "tsdx build"
+    },
+    "dependencies": {
+      "@ethersproject/abi": "^5.0.12",
+      "@ethersproject/solidity": "^5.0.9",
+      "tiny-invariant": "^1.1.0",
+      "tiny-warning": "^1.0.3"
+    },
+    "devDependencies": {
+      "@types/jest": "^24.0.25",
+      "@unisxzczwap/v3-core": "1.0.0",
+      "tsdx": "^0.14.1"
+    },
+    "engines": {
+      "node": ">=10"
+    },
+    "prettier": {
+      "printWidth": 120,
+      "semi": false,
+      "singleQuote": true
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
