@@ -1,4 +1,4 @@
-import { Currency, Price, Token } from '@vutien/sdk-core';
+import { Currency, Price, Token } from '@kyberswap/ks-sdk-core';
 import { Pool } from './pool';
 /**
  * Represents a list of pools through which a swap can occur

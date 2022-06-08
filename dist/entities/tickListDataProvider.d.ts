@@ -1,4 +1,4 @@
-import { BigintIsh } from '@vutien/sdk-core';
+import { BigintIsh } from '@kyberswap/ks-sdk-core';
 import { Tick, TickConstructorArgs } from './tick';
 import { TickDataProvider } from './tickDataProvider';
 export declare class TickListDataProvider implements TickDataProvider {

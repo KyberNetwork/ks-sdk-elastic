@@ -1,4 +1,4 @@
-import { Currency } from '@vutien/sdk-core';
+import { Currency } from '@kyberswap/ks-sdk-core';
 import { Route } from '../entities/route';
 /**
  * Converts a route to a hex encoded path

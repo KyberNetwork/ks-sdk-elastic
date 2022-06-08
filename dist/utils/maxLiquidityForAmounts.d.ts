@@ -1,4 +1,4 @@
-import { BigintIsh } from '@vutien/sdk-core';
+import { BigintIsh } from '@kyberswap/ks-sdk-core';
 import JSBI from 'jsbi';
 /**
  * Computes the maximum amount of liquidity received for a given amount of token0, token1,

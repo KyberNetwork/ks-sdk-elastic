@@ -1,4 +1,4 @@
-import { Percent, Token } from '@vutien/sdk-core'
+import { Percent, Token } from '@kyberswap/ks-sdk-core'
 import JSBI from 'jsbi'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'

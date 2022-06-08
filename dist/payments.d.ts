@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi';
-import { Percent, Token } from '@vutien/sdk-core';
+import { Percent, Token } from '@kyberswap/ks-sdk-core';
 import JSBI from 'jsbi';
 export interface FeeOptions {
     /**

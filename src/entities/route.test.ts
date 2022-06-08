@@ -1,4 +1,4 @@
-import { Ether, Token, WETH } from '@vutien/sdk-core'
+import { Ether, Token, WETH } from '@kyberswap/ks-sdk-core'
 import { FeeAmount } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
 import { TickMath } from '../utils/tickMath'

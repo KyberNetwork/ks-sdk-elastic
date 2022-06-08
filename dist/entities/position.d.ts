@@ -1,4 +1,4 @@
-import { BigintIsh, Percent, Price, CurrencyAmount, Token } from '@vutien/sdk-core';
+import { BigintIsh, Percent, Price, CurrencyAmount, Token } from '@kyberswap/ks-sdk-core';
 import JSBI from 'jsbi';
 import { Pool } from './pool';
 interface PositionConstructorArgs {

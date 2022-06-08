@@ -1,4 +1,4 @@
-import { Token } from '@vutien/sdk-core';
+import { Token } from '@kyberswap/ks-sdk-core';
 import { FeeAmount } from '../constants';
 /**
  * Computes a pool address

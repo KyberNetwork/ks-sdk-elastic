@@ -1,5 +1,5 @@
 import JSBI from 'jsbi';
-import { BigintIsh, Price, Token, CurrencyAmount } from '@vutien/sdk-core';
+import { BigintIsh, Price, Token, CurrencyAmount } from '@kyberswap/ks-sdk-core';
 import { FeeAmount } from '../constants';
 import { TickDataProvider } from './tickDataProvider';
 import { Tick, TickConstructorArgs } from './tick';

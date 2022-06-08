@@ -1,6 +1,6 @@
 import JSBI from 'jsbi'
 import { ONE, ZERO } from '../internalConstants'
-import { sqrt } from '@vutien/sdk-core'
+import { sqrt } from '@kyberswap/ks-sdk-core'
 export abstract class FullMath {
   /**
    * Cannot be constructed.

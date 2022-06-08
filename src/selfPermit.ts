@@ -1,4 +1,4 @@
-import { BigintIsh, Token } from '@vutien/sdk-core'
+import { BigintIsh, Token } from '@kyberswap/ks-sdk-core'
 import { Interface } from '@ethersproject/abi'
 import { abi } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/ISelfPermit.sol/ISelfPermit.json'
 import { toHex } from './utils/calldata'

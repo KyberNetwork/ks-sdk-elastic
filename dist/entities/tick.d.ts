@@ -1,5 +1,5 @@
 import JSBI from 'jsbi';
-import { BigintIsh } from '@vutien/sdk-core';
+import { BigintIsh } from '@kyberswap/ks-sdk-core';
 export interface TickConstructorArgs {
     index: number;
     liquidityGross: BigintIsh;

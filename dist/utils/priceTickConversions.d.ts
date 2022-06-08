@@ -1,4 +1,4 @@
-import { Price, Token } from '@vutien/sdk-core';
+import { Price, Token } from '@kyberswap/ks-sdk-core';
 /**
  * Returns a price object corresponding to the input tick and the base/quote token
  * Inputs must be tokens because the address order is used to interpret the price represented by the tick

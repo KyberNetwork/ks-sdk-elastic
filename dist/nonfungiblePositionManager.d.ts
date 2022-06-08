@@ -1,4 +1,4 @@
-import { BigintIsh, Percent, CurrencyAmount, Currency, NativeCurrency } from '@vutien/sdk-core';
+import { BigintIsh, Percent, CurrencyAmount, Currency, NativeCurrency } from '@kyberswap/ks-sdk-core';
 import JSBI from 'jsbi';
 import { Position } from './entities/position';
 import { MethodParameters } from './utils/calldata';

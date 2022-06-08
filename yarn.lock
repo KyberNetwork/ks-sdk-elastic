@@ -1326,6 +1326,18 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@kyberswap/ks-sdk-core@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@kyberswap/ks-sdk-core/-/ks-sdk-core-0.0.12.tgz#e6b786e0e0885ab3fe7ee6ea5d99e941e50adb8f"
+  integrity sha512-AUkaEMWONj7gyJNa8s8pFiXLO7MOCf2fKNVvCmHSF8HPf/+h1biV4Kr7y/KkvTFzdsfbgfV1kR9fvW0Fm90MrA==
+  dependencies:
+    "@ethersproject/address" "^5.0.2"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.4"
+    tiny-invariant "^1.1.0"
+    toformat "^2.0.0"
+
 "@openzeppelin/contracts@3.4.1-solc-0.7-2":
   version "3.4.1-solc-0.7-2"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.4.1-solc-0.7-2.tgz#371c67ebffe50f551c3146a9eec5fe6ffe862e92"
@@ -1615,18 +1627,6 @@
     "@uniswap/v3-core" "1.0.0"
     base64-sol "1.0.1"
     hardhat-watcher "^2.1.1"
-
-"@vutien/sdk-core@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@vutien/sdk-core/-/sdk-core-0.0.11.tgz#ec383884c81f14632f4aa3a6d7a4add03ed2dc8d"
-  integrity sha512-NgyeCNsbHl3g8jLBS7H8oMjD2NhAELzvhv+t8wkYRElXMuw6M49ZjR6bkq3dk48XUbp6x1sGrgwxUgTrtPGudg==
-  dependencies:
-    "@ethersproject/address" "^5.0.2"
-    big.js "^5.2.2"
-    decimal.js-light "^2.5.0"
-    jsbi "^3.1.4"
-    tiny-invariant "^1.1.0"
-    toformat "^2.0.0"
 
 abab@^2.0.0:
   version "2.0.5"

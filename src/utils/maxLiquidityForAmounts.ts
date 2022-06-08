@@ -1,4 +1,4 @@
-import { BigintIsh } from '@vutien/sdk-core'
+import { BigintIsh } from '@kyberswap/ks-sdk-core'
 import JSBI from 'jsbi'
 import { Q96 } from '../internalConstants'
 

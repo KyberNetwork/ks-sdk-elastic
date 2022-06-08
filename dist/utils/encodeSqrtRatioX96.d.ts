@@ -1,5 +1,5 @@
 import JSBI from 'jsbi';
-import { BigintIsh } from '@vutien/sdk-core';
+import { BigintIsh } from '@kyberswap/ks-sdk-core';
 /**
  * Returns the sqrt ratio as a Q64.96 corresponding to a given ratio of amount1 and amount0
  * @param amount1 The numerator amount i.e., the amount of token1

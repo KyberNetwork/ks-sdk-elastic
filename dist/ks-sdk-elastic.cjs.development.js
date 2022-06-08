@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var JSBI = _interopDefault(require('jsbi'));
-var sdkCore = require('@vutien/sdk-core');
+var ksSdkCore = require('@kyberswap/ks-sdk-core');
 var abi$5 = require('@ethersproject/abi');
 var address = require('@ethersproject/address');
 var solidity = require('@ethersproject/solidity');
@@ -1039,7 +1039,7 @@ var POWERS_OF_2 = /*#__PURE__*/[128, 64, 32, 16, 8, 4, 2, 1].map(function (pow) 
 });
 function mostSignificantBit(x) {
   !JSBI.greaterThan(x, ZERO) ?  invariant(false, 'ZERO')  : void 0;
-  !JSBI.lessThanOrEqual(x, sdkCore.MaxUint256) ?  invariant(false, 'MAX')  : void 0;
+  !JSBI.lessThanOrEqual(x, ksSdkCore.MaxUint256) ?  invariant(false, 'MAX')  : void 0;
   var msb = 0;
 
   for (var _iterator = _createForOfIteratorHelperLoose(POWERS_OF_2), _step; !(_step = _iterator()).done;) {
@@ -1095,7 +1095,7 @@ var TickMath = /*#__PURE__*/function () {
     if ((absTick & 0x20000) != 0) ratio = mulShift(ratio, '0x5d6af8dedb81196699c329225ee604');
     if ((absTick & 0x40000) != 0) ratio = mulShift(ratio, '0x2216e584f5fa1ea926041bedfe98');
     if ((absTick & 0x80000) != 0) ratio = mulShift(ratio, '0x48a170391f7dc42444e8fa2');
-    if (tick > 0) ratio = JSBI.divide(sdkCore.MaxUint256, ratio); // back to Q96
+    if (tick > 0) ratio = JSBI.divide(ksSdkCore.MaxUint256, ratio); // back to Q96
 
     return JSBI.greaterThan(JSBI.remainder(ratio, Q32), ZERO) ? JSBI.add(JSBI.divide(ratio, Q32), ONE) : JSBI.divide(ratio, Q32);
   }
@@ -1399,7 +1399,7 @@ function encodeSqrtRatioX96(amount1, amount0) {
   var numerator = JSBI.leftShift(JSBI.BigInt(amount1), JSBI.BigInt(192));
   var denominator = JSBI.BigInt(amount0);
   var ratioX192 = JSBI.divide(numerator, denominator);
-  return sdkCore.sqrt(ratioX192);
+  return ksSdkCore.sqrt(ratioX192);
 }
 
 var FullMath = /*#__PURE__*/function () {
@@ -1424,7 +1424,7 @@ var FullMath = /*#__PURE__*/function () {
     // smallerRoot = (b - sqrt(b * b - a * c)) / a;
     var tmp1 = JSBI.multiply(b, b);
     var tmp2 = JSBI.multiply(a, c);
-    var tmp3 = sdkCore.sqrt(JSBI.subtract(tmp1, tmp2));
+    var tmp3 = ksSdkCore.sqrt(JSBI.subtract(tmp1, tmp2));
     var tmp4 = JSBI.subtract(b, tmp3);
     return JSBI.divide(tmp4, a);
   };
@@ -1568,7 +1568,7 @@ function nearestUsableTick(tick, tickSpacing) {
 function tickToPrice(baseToken, quoteToken, tick) {
   var sqrtRatioX96 = TickMath.getSqrtRatioAtTick(tick);
   var ratioX192 = JSBI.multiply(sqrtRatioX96, sqrtRatioX96);
-  return baseToken.sortsBefore(quoteToken) ? new sdkCore.Price(baseToken, quoteToken, Q192, ratioX192) : new sdkCore.Price(baseToken, quoteToken, ratioX192, Q192);
+  return baseToken.sortsBefore(quoteToken) ? new ksSdkCore.Price(baseToken, quoteToken, Q192, ratioX192) : new ksSdkCore.Price(baseToken, quoteToken, ratioX192, Q192);
 }
 /**
  * Returns the first tick for which the given price is greater than or equal to the tick price
@@ -1600,12 +1600,12 @@ var MAX_FEE = /*#__PURE__*/JSBI.exponentiate( /*#__PURE__*/JSBI.BigInt(10), /*#_
 
 function multiplyIn256(x, y) {
   var product = JSBI.multiply(x, y);
-  return JSBI.bitwiseAnd(product, sdkCore.MaxUint256);
+  return JSBI.bitwiseAnd(product, ksSdkCore.MaxUint256);
 }
 
 function addIn256(x, y) {
   var sum = JSBI.add(x, y);
-  return JSBI.bitwiseAnd(sum, sdkCore.MaxUint256);
+  return JSBI.bitwiseAnd(sum, ksSdkCore.MaxUint256);
 }
 
 var SqrtPriceMath = /*#__PURE__*/function () {
@@ -2216,7 +2216,7 @@ var Pool = /*#__PURE__*/function () {
               liquidity = _yield$this$swap.liquidity;
               tickCurrent = _yield$this$swap.tickCurrent;
               outputToken = zeroForOne ? this.token1 : this.token0;
-              return _context.abrupt("return", [sdkCore.CurrencyAmount.fromRawAmount(outputToken, JSBI.multiply(outputAmount, NEGATIVE_ONE)), new Pool(this.token0, this.token1, this.fee, sqrtRatioX96, liquidity, 0, tickCurrent, this.tickDataProvider)]);
+              return _context.abrupt("return", [ksSdkCore.CurrencyAmount.fromRawAmount(outputToken, JSBI.multiply(outputAmount, NEGATIVE_ONE)), new Pool(this.token0, this.token1, this.fee, sqrtRatioX96, liquidity, 0, tickCurrent, this.tickDataProvider)]);
 
             case 11:
             case "end":
@@ -2254,7 +2254,7 @@ var Pool = /*#__PURE__*/function () {
               reinvestL = _yield$this$swapProMM.reinvestL;
               tickCurrent = _yield$this$swapProMM.tickCurrent;
               outputToken = zeroForOne ? this.token1 : this.token0;
-              return _context2.abrupt("return", [sdkCore.CurrencyAmount.fromRawAmount(outputToken, JSBI.multiply(outputAmount, NEGATIVE_ONE)), new Pool(this.token0, this.token1, this.fee, sqrtRatioX96, baseL, reinvestL, tickCurrent, this.tickDataProvider)]);
+              return _context2.abrupt("return", [ksSdkCore.CurrencyAmount.fromRawAmount(outputToken, JSBI.multiply(outputAmount, NEGATIVE_ONE)), new Pool(this.token0, this.token1, this.fee, sqrtRatioX96, baseL, reinvestL, tickCurrent, this.tickDataProvider)]);
 
             case 12:
             case "end":
@@ -2300,7 +2300,7 @@ var Pool = /*#__PURE__*/function () {
               liquidity = _yield$this$swap2.liquidity;
               tickCurrent = _yield$this$swap2.tickCurrent;
               inputToken = zeroForOne ? this.token0 : this.token1;
-              return _context3.abrupt("return", [sdkCore.CurrencyAmount.fromRawAmount(inputToken, inputAmount), new Pool(this.token0, this.token1, this.fee, sqrtRatioX96, liquidity, 0, tickCurrent, this.tickDataProvider)]);
+              return _context3.abrupt("return", [ksSdkCore.CurrencyAmount.fromRawAmount(inputToken, inputAmount), new Pool(this.token0, this.token1, this.fee, sqrtRatioX96, liquidity, 0, tickCurrent, this.tickDataProvider)]);
 
             case 11:
             case "end":
@@ -2616,7 +2616,7 @@ var Pool = /*#__PURE__*/function () {
     get: function get() {
       var _this$_token0Price;
 
-      return (_this$_token0Price = this._token0Price) != null ? _this$_token0Price : this._token0Price = new sdkCore.Price(this.token0, this.token1, Q192, JSBI.multiply(this.sqrtRatioX96, this.sqrtRatioX96));
+      return (_this$_token0Price = this._token0Price) != null ? _this$_token0Price : this._token0Price = new ksSdkCore.Price(this.token0, this.token1, Q192, JSBI.multiply(this.sqrtRatioX96, this.sqrtRatioX96));
     }
     /**
      * Returns the current mid price of the pool in terms of token1, i.e. the ratio of token0 over token1
@@ -2627,7 +2627,7 @@ var Pool = /*#__PURE__*/function () {
     get: function get() {
       var _this$_token1Price;
 
-      return (_this$_token1Price = this._token1Price) != null ? _this$_token1Price : this._token1Price = new sdkCore.Price(this.token1, this.token0, JSBI.multiply(this.sqrtRatioX96, this.sqrtRatioX96), Q192);
+      return (_this$_token1Price = this._token1Price) != null ? _this$_token1Price : this._token1Price = new ksSdkCore.Price(this.token1, this.token0, JSBI.multiply(this.sqrtRatioX96, this.sqrtRatioX96), Q192);
     }
   }, {
     key: "chainId",
@@ -2682,7 +2682,7 @@ var Position = /*#__PURE__*/function () {
    * @returns The sqrt ratios after slippage
    */
   _proto.ratiosAfterSlippage = function ratiosAfterSlippage(slippageTolerance) {
-    var priceLower = this.pool.token0Price.asFraction.multiply(new sdkCore.Percent(1).subtract(slippageTolerance));
+    var priceLower = this.pool.token0Price.asFraction.multiply(new ksSdkCore.Percent(1).subtract(slippageTolerance));
     var priceUpper = this.pool.token0Price.asFraction.multiply(slippageTolerance.add(1));
     var sqrtRatioX96Lower = encodeSqrtRatioX96(priceLower.numerator, priceLower.denominator);
 
@@ -2848,7 +2848,7 @@ var Position = /*#__PURE__*/function () {
       tickLower: tickLower,
       tickUpper: tickUpper,
       amount0: amount0,
-      amount1: sdkCore.MaxUint256,
+      amount1: ksSdkCore.MaxUint256,
       useFullPrecision: useFullPrecision
     });
   }
@@ -2872,7 +2872,7 @@ var Position = /*#__PURE__*/function () {
       pool: pool,
       tickLower: tickLower,
       tickUpper: tickUpper,
-      amount0: sdkCore.MaxUint256,
+      amount0: ksSdkCore.MaxUint256,
       amount1: amount1,
       useFullPrecision: true
     });
@@ -2901,11 +2901,11 @@ var Position = /*#__PURE__*/function () {
     get: function get() {
       if (this._token0Amount === null) {
         if (this.pool.tickCurrent < this.tickLower) {
-          this._token0Amount = sdkCore.CurrencyAmount.fromRawAmount(this.pool.token0, SqrtPriceMath.getAmount0Delta(TickMath.getSqrtRatioAtTick(this.tickLower), TickMath.getSqrtRatioAtTick(this.tickUpper), this.liquidity, false));
+          this._token0Amount = ksSdkCore.CurrencyAmount.fromRawAmount(this.pool.token0, SqrtPriceMath.getAmount0Delta(TickMath.getSqrtRatioAtTick(this.tickLower), TickMath.getSqrtRatioAtTick(this.tickUpper), this.liquidity, false));
         } else if (this.pool.tickCurrent < this.tickUpper) {
-          this._token0Amount = sdkCore.CurrencyAmount.fromRawAmount(this.pool.token0, SqrtPriceMath.getAmount0Delta(this.pool.sqrtRatioX96, TickMath.getSqrtRatioAtTick(this.tickUpper), this.liquidity, false));
+          this._token0Amount = ksSdkCore.CurrencyAmount.fromRawAmount(this.pool.token0, SqrtPriceMath.getAmount0Delta(this.pool.sqrtRatioX96, TickMath.getSqrtRatioAtTick(this.tickUpper), this.liquidity, false));
         } else {
-          this._token0Amount = sdkCore.CurrencyAmount.fromRawAmount(this.pool.token0, ZERO);
+          this._token0Amount = ksSdkCore.CurrencyAmount.fromRawAmount(this.pool.token0, ZERO);
         }
       }
 
@@ -2920,11 +2920,11 @@ var Position = /*#__PURE__*/function () {
     get: function get() {
       if (this._token1Amount === null) {
         if (this.pool.tickCurrent < this.tickLower) {
-          this._token1Amount = sdkCore.CurrencyAmount.fromRawAmount(this.pool.token1, ZERO);
+          this._token1Amount = ksSdkCore.CurrencyAmount.fromRawAmount(this.pool.token1, ZERO);
         } else if (this.pool.tickCurrent < this.tickUpper) {
-          this._token1Amount = sdkCore.CurrencyAmount.fromRawAmount(this.pool.token1, SqrtPriceMath.getAmount1Delta(TickMath.getSqrtRatioAtTick(this.tickLower), this.pool.sqrtRatioX96, this.liquidity, false));
+          this._token1Amount = ksSdkCore.CurrencyAmount.fromRawAmount(this.pool.token1, SqrtPriceMath.getAmount1Delta(TickMath.getSqrtRatioAtTick(this.tickLower), this.pool.sqrtRatioX96, this.liquidity, false));
         } else {
-          this._token1Amount = sdkCore.CurrencyAmount.fromRawAmount(this.pool.token1, SqrtPriceMath.getAmount1Delta(TickMath.getSqrtRatioAtTick(this.tickLower), TickMath.getSqrtRatioAtTick(this.tickUpper), this.liquidity, false));
+          this._token1Amount = ksSdkCore.CurrencyAmount.fromRawAmount(this.pool.token1, SqrtPriceMath.getAmount1Delta(TickMath.getSqrtRatioAtTick(this.tickLower), TickMath.getSqrtRatioAtTick(this.tickUpper), this.liquidity, false));
         }
       }
 
@@ -3035,7 +3035,7 @@ var Route = /*#__PURE__*/function () {
         nextInput: this.pools[0].token0,
         price: this.pools[0].token1Price
       }).price;
-      return this._midPrice = new sdkCore.Price(this.input, this.output, price.denominator, price.numerator);
+      return this._midPrice = new ksSdkCore.Price(this.input, this.output, price.denominator, price.numerator);
     }
   }]);
 
@@ -3138,11 +3138,11 @@ var Trade = /*#__PURE__*/function () {
 
     !!slippageTolerance.lessThan(ZERO) ?  invariant(false, 'SLIPPAGE_TOLERANCE')  : void 0;
 
-    if (this.tradeType === sdkCore.TradeType.EXACT_OUTPUT) {
+    if (this.tradeType === ksSdkCore.TradeType.EXACT_OUTPUT) {
       return amountOut;
     } else {
-      var slippageAdjustedAmountOut = new sdkCore.Fraction(ONE).add(slippageTolerance).invert().multiply(amountOut.quotient).quotient;
-      return sdkCore.CurrencyAmount.fromRawAmount(amountOut.currency, slippageAdjustedAmountOut);
+      var slippageAdjustedAmountOut = new ksSdkCore.Fraction(ONE).add(slippageTolerance).invert().multiply(amountOut.quotient).quotient;
+      return ksSdkCore.CurrencyAmount.fromRawAmount(amountOut.currency, slippageAdjustedAmountOut);
     }
   }
   /**
@@ -3159,11 +3159,11 @@ var Trade = /*#__PURE__*/function () {
 
     !!slippageTolerance.lessThan(ZERO) ?  invariant(false, 'SLIPPAGE_TOLERANCE')  : void 0;
 
-    if (this.tradeType === sdkCore.TradeType.EXACT_INPUT) {
+    if (this.tradeType === ksSdkCore.TradeType.EXACT_INPUT) {
       return amountIn;
     } else {
-      var slippageAdjustedAmountIn = new sdkCore.Fraction(ONE).add(slippageTolerance).multiply(amountIn.quotient).quotient;
-      return sdkCore.CurrencyAmount.fromRawAmount(amountIn.currency, slippageAdjustedAmountIn);
+      var slippageAdjustedAmountIn = new ksSdkCore.Fraction(ONE).add(slippageTolerance).multiply(amountIn.quotient).quotient;
+      return ksSdkCore.CurrencyAmount.fromRawAmount(amountIn.currency, slippageAdjustedAmountIn);
     }
   }
   /**
@@ -3174,7 +3174,7 @@ var Trade = /*#__PURE__*/function () {
   ;
 
   _proto.worstExecutionPrice = function worstExecutionPrice(slippageTolerance) {
-    return new sdkCore.Price(this.inputAmount.currency, this.outputAmount.currency, this.maximumAmountIn(slippageTolerance).quotient, this.minimumAmountOut(slippageTolerance).quotient);
+    return new ksSdkCore.Price(this.inputAmount.currency, this.outputAmount.currency, this.maximumAmountIn(slippageTolerance).quotient, this.minimumAmountOut(slippageTolerance).quotient);
   };
 
   _createClass(Trade, [{
@@ -3200,7 +3200,7 @@ var Trade = /*#__PURE__*/function () {
         return inputAmount;
       }).reduce(function (total, cur) {
         return total.add(cur);
-      }, sdkCore.CurrencyAmount.fromRawAmount(inputCurrency, 0));
+      }, ksSdkCore.CurrencyAmount.fromRawAmount(inputCurrency, 0));
       this._inputAmount = totalInputFromRoutes;
       return this._inputAmount;
     }
@@ -3221,7 +3221,7 @@ var Trade = /*#__PURE__*/function () {
         return outputAmount;
       }).reduce(function (total, cur) {
         return total.add(cur);
-      }, sdkCore.CurrencyAmount.fromRawAmount(outputCurrency, 0));
+      }, ksSdkCore.CurrencyAmount.fromRawAmount(outputCurrency, 0));
       this._outputAmount = totalOutputFromRoutes;
       return this._outputAmount;
     }
@@ -3234,7 +3234,7 @@ var Trade = /*#__PURE__*/function () {
     get: function get() {
       var _this$_executionPrice;
 
-      return (_this$_executionPrice = this._executionPrice) != null ? _this$_executionPrice : this._executionPrice = new sdkCore.Price(this.inputAmount.currency, this.outputAmount.currency, this.inputAmount.quotient, this.outputAmount.quotient);
+      return (_this$_executionPrice = this._executionPrice) != null ? _this$_executionPrice : this._executionPrice = new ksSdkCore.Price(this.inputAmount.currency, this.outputAmount.currency, this.inputAmount.quotient, this.outputAmount.quotient);
     }
     /**
      * Returns the percent difference between the route's mid price and the price impact
@@ -3247,7 +3247,7 @@ var Trade = /*#__PURE__*/function () {
         return this._priceImpact;
       }
 
-      var spotOutputAmount = sdkCore.CurrencyAmount.fromRawAmount(this.outputAmount.currency, 0);
+      var spotOutputAmount = ksSdkCore.CurrencyAmount.fromRawAmount(this.outputAmount.currency, 0);
 
       for (var _iterator3 = _createForOfIteratorHelperLoose(this.swaps), _step3; !(_step3 = _iterator3()).done;) {
         var _step3$value = _step3.value,
@@ -3258,7 +3258,7 @@ var Trade = /*#__PURE__*/function () {
       }
 
       var priceImpact = spotOutputAmount.subtract(this.outputAmount).divide(spotOutputAmount);
-      this._priceImpact = new sdkCore.Percent(priceImpact.numerator, priceImpact.denominator);
+      this._priceImpact = new ksSdkCore.Percent(priceImpact.numerator, priceImpact.denominator);
       return this._priceImpact;
     }
   }]);
@@ -4673,11 +4673,11 @@ var Payments = /*#__PURE__*/function () {
   ;
 
   Payments.encodeUnwrapWETH = function encodeUnwrapWETH(amountMinimum, recipient, feeOptions) {
-    recipient = sdkCore.validateAndParseAddress(recipient);
+    recipient = ksSdkCore.validateAndParseAddress(recipient);
 
     if (!!feeOptions) {
       var feeBips = this.encodeFeeBips(feeOptions.fee);
-      var feeRecipient = sdkCore.validateAndParseAddress(feeOptions.recipient);
+      var feeRecipient = ksSdkCore.validateAndParseAddress(feeOptions.recipient);
       return Payments.INTERFACE.encodeFunctionData('unwrapWethWithFee', [toHex(amountMinimum), recipient, feeBips, feeRecipient]);
     } else {
       return Payments.INTERFACE.encodeFunctionData('unwrapWeth', [toHex(amountMinimum), recipient]);
@@ -4687,11 +4687,11 @@ var Payments = /*#__PURE__*/function () {
   ;
 
   Payments.encodeSweepToken = function encodeSweepToken(token, amountMinimum, recipient, feeOptions) {
-    recipient = sdkCore.validateAndParseAddress(recipient);
+    recipient = ksSdkCore.validateAndParseAddress(recipient);
 
     if (!!feeOptions) {
       var feeBips = this.encodeFeeBips(feeOptions.fee);
-      var feeRecipient = sdkCore.validateAndParseAddress(feeOptions.recipient);
+      var feeRecipient = ksSdkCore.validateAndParseAddress(feeOptions.recipient);
       return Payments.INTERFACE.encodeFunctionData('transferAllTokensWithFee', [token.address, toHex(amountMinimum), recipient, feeBips, feeRecipient]);
     } else {
       return Payments.INTERFACE.encodeFunctionData('transferAllTokens', [token.address, toHex(amountMinimum), recipient]);
@@ -4765,7 +4765,7 @@ var NonfungiblePositionManager = /*#__PURE__*/function () {
 
 
     if (isMint(options)) {
-      var recipient = sdkCore.validateAndParseAddress(options.recipient);
+      var recipient = ksSdkCore.validateAndParseAddress(options.recipient);
       calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('mint', [{
         token0: position.pool.token0.address,
         token1: position.pool.token1.address,
@@ -4841,7 +4841,7 @@ var NonfungiblePositionManager = /*#__PURE__*/function () {
 
 
     if (isMint(options)) {
-      var recipient = sdkCore.validateAndParseAddress(options.recipient);
+      var recipient = ksSdkCore.validateAndParseAddress(options.recipient);
       calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('mint', [{
         token0: position.pool.token0.address,
         token1: position.pool.token1.address,
@@ -4892,7 +4892,7 @@ var NonfungiblePositionManager = /*#__PURE__*/function () {
     var tokenId = toHex(options.tokenId); // const involvesETH =
     // options.expectedCurrencyOwed0.currency.isNative || options.expectedCurrencyOwed1.currency.isNative
 
-    var recipient = sdkCore.validateAndParseAddress(options.recipient);
+    var recipient = ksSdkCore.validateAndParseAddress(options.recipient);
     var deadline = toHex(options.deadline); //remove a small amount to update the RTokens
 
     if (!options.isRemovingLiquid) {
@@ -4984,7 +4984,7 @@ var NonfungiblePositionManager = /*#__PURE__*/function () {
         amount1Min = _partialPosition$burn.amount1;
 
     if (options.permit) {
-      calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('permit', [sdkCore.validateAndParseAddress(options.permit.spender), tokenId, toHex(options.permit.deadline), options.permit.v, options.permit.r, options.permit.s]));
+      calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('permit', [ksSdkCore.validateAndParseAddress(options.permit.spender), tokenId, toHex(options.permit.deadline), options.permit.v, options.permit.r, options.permit.s]));
     } // remove liquidity
 
 
@@ -5004,8 +5004,8 @@ var NonfungiblePositionManager = /*#__PURE__*/function () {
     calldatas.push.apply(calldatas, NonfungiblePositionManager.encodeCollect(_extends({
       tokenId: toHex(options.tokenId),
       // add the underlying value to the expected currency already owed
-      expectedCurrencyOwed0: expectedCurrencyOwed0.add(sdkCore.CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min)),
-      expectedCurrencyOwed1: expectedCurrencyOwed1.add(sdkCore.CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min))
+      expectedCurrencyOwed0: expectedCurrencyOwed0.add(ksSdkCore.CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min)),
+      expectedCurrencyOwed1: expectedCurrencyOwed1.add(ksSdkCore.CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min))
     }, rest)));
 
     if (options.liquidityPercentage.equalTo(ONE)) {
@@ -5023,8 +5023,8 @@ var NonfungiblePositionManager = /*#__PURE__*/function () {
   };
 
   NonfungiblePositionManager.safeTransferFromParameters = function safeTransferFromParameters(options) {
-    var recipient = sdkCore.validateAndParseAddress(options.recipient);
-    var sender = sdkCore.validateAndParseAddress(options.sender);
+    var recipient = ksSdkCore.validateAndParseAddress(options.recipient);
+    var sender = ksSdkCore.validateAndParseAddress(options.sender);
     var calldata;
 
     if (options.data) {
@@ -5347,7 +5347,7 @@ var SwapQuoter = /*#__PURE__*/function () {
     var calldata;
 
     if (singleHop) {
-      if (tradeType === sdkCore.TradeType.EXACT_INPUT) {
+      if (tradeType === ksSdkCore.TradeType.EXACT_INPUT) {
         var _options$sqrtPriceLim, _options;
 
         calldata = SwapQuoter.INTERFACE.encodeFunctionData("quoteExactInputSingle", [[route.tokenPath[0].address, route.tokenPath[1].address, quoteAmount, route.pools[0].fee, toHex((_options$sqrtPriceLim = (_options = options) == null ? void 0 : _options.sqrtPriceLimitX96) != null ? _options$sqrtPriceLim : 0)]]);
@@ -5360,9 +5360,9 @@ var SwapQuoter = /*#__PURE__*/function () {
       var _options3;
 
       !(((_options3 = options) == null ? void 0 : _options3.sqrtPriceLimitX96) === undefined) ?  invariant(false, 'MULTIHOP_PRICE_LIMIT')  : void 0;
-      var path = encodeRouteToPath(route, tradeType === sdkCore.TradeType.EXACT_OUTPUT);
+      var path = encodeRouteToPath(route, tradeType === ksSdkCore.TradeType.EXACT_OUTPUT);
 
-      if (tradeType === sdkCore.TradeType.EXACT_INPUT) {
+      if (tradeType === ksSdkCore.TradeType.EXACT_INPUT) {
         calldata = SwapQuoter.INTERFACE.encodeFunctionData('quoteExactInput', [path, quoteAmount]);
       } else {
         calldata = SwapQuoter.INTERFACE.encodeFunctionData('quoteExactOutput', [path, quoteAmount]);
@@ -5852,13 +5852,13 @@ var SwapRouter = /*#__PURE__*/function () {
       return trade.outputAmount.currency.wrapped.equals(tokenOut);
     }) ?  invariant(false, 'TOKEN_OUT_DIFF')  : void 0;
     var calldatas = [];
-    var ZERO_IN = sdkCore.CurrencyAmount.fromRawAmount(trades[0].inputAmount.currency, 0);
-    var ZERO_OUT = sdkCore.CurrencyAmount.fromRawAmount(trades[0].outputAmount.currency, 0);
+    var ZERO_IN = ksSdkCore.CurrencyAmount.fromRawAmount(trades[0].inputAmount.currency, 0);
+    var ZERO_OUT = ksSdkCore.CurrencyAmount.fromRawAmount(trades[0].outputAmount.currency, 0);
     var totalAmountOut = trades.reduce(function (sum, trade) {
       return sum.add(trade.minimumAmountOut(options.slippageTolerance));
     }, ZERO_OUT); // flag for whether a refund needs to happen
 
-    var mustRefund = sampleTrade.inputAmount.currency.isNative && sampleTrade.tradeType === sdkCore.TradeType.EXACT_OUTPUT;
+    var mustRefund = sampleTrade.inputAmount.currency.isNative && sampleTrade.tradeType === ksSdkCore.TradeType.EXACT_OUTPUT;
     var inputIsNative = sampleTrade.inputAmount.currency.isNative; // flags for whether funds should be send first to the router
 
     var outputIsNative = sampleTrade.outputAmount.currency.isNative;
@@ -5872,7 +5872,7 @@ var SwapRouter = /*#__PURE__*/function () {
       calldatas.push(SelfPermit.encodePermit(sampleTrade.inputAmount.currency, options.inputTokenPermit));
     }
 
-    var recipient = sdkCore.validateAndParseAddress(options.recipient);
+    var recipient = ksSdkCore.validateAndParseAddress(options.recipient);
     var deadline = toHex(options.deadline);
 
     for (var _iterator = _createForOfIteratorHelperLoose(trades), _step; !(_step = _iterator()).done;) {
@@ -5889,7 +5889,7 @@ var SwapRouter = /*#__PURE__*/function () {
         var singleHop = route.pools.length === 1;
 
         if (singleHop) {
-          if (trade.tradeType === sdkCore.TradeType.EXACT_INPUT) {
+          if (trade.tradeType === ksSdkCore.TradeType.EXACT_INPUT) {
             var _options$sqrtPriceLim;
 
             var exactInputSingleParams = {
@@ -5920,9 +5920,9 @@ var SwapRouter = /*#__PURE__*/function () {
           }
         } else {
           !(options.sqrtPriceLimitX96 === undefined) ?  invariant(false, 'MULTIHOP_PRICE_LIMIT')  : void 0;
-          var path = encodeRouteToPath(route, trade.tradeType === sdkCore.TradeType.EXACT_OUTPUT);
+          var path = encodeRouteToPath(route, trade.tradeType === ksSdkCore.TradeType.EXACT_OUTPUT);
 
-          if (trade.tradeType === sdkCore.TradeType.EXACT_INPUT) {
+          if (trade.tradeType === ksSdkCore.TradeType.EXACT_INPUT) {
             var exactInputParams = {
               path: path,
               recipient: routerMustCustody ? ADDRESS_ZERO : recipient,

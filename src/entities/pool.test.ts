@@ -1,4 +1,4 @@
-import { Token, CurrencyAmount, WETH } from '@vutien/sdk-core'
+import { Token, CurrencyAmount, WETH } from '@kyberswap/ks-sdk-core'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { nearestUsableTick } from '../utils/nearestUsableTick'
 import { TickMath } from '../utils/tickMath'

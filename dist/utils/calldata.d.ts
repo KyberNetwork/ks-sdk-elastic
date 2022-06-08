@@ -1,4 +1,4 @@
-import { BigintIsh } from '@vutien/sdk-core';
+import { BigintIsh } from '@kyberswap/ks-sdk-core';
 /**
  * Generated method parameters for executing a call.
  */

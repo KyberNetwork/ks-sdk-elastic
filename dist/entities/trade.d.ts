@@ -1,4 +1,4 @@
-import { Currency, Percent, Price, CurrencyAmount, TradeType } from '@vutien/sdk-core';
+import { Currency, Percent, Price, CurrencyAmount, TradeType } from '@kyberswap/ks-sdk-core';
 import { Route } from './route';
 export interface BestTradeOptions {
     maxNumResults?: number;

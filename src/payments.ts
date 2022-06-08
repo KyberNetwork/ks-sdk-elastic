@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { Percent, Token, validateAndParseAddress } from '@vutien/sdk-core'
+import { Percent, Token, validateAndParseAddress } from '@kyberswap/ks-sdk-core'
 import JSBI from 'jsbi'
 import { toHex } from './utils/calldata'
 import { abi } from './abis/IProAmmRouterTokenHelperWithFee.json'

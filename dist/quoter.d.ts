@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi';
-import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@vutien/sdk-core';
+import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@kyberswap/ks-sdk-core';
 import { MethodParameters } from './utils/calldata';
 import { Route } from './entities';
 /**

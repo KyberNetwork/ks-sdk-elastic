@@ -1,4 +1,4 @@
-import { Ether, Token, WETH } from '@vutien/sdk-core'
+import { Ether, Token, WETH } from '@kyberswap/ks-sdk-core'
 import { FeeAmount } from '../constants'
 import { Pool } from '../entities/pool'
 import { Route } from '../entities/route'
