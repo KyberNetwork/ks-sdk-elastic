@@ -4,7 +4,7 @@ import { NEGATIVE_ONE, Q96, ZERO } from '../internalConstants'
 import { FullMath } from './fullMath'
 import { SqrtPriceMath } from './sqrtPriceMath'
 
-const BPS = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(4))
+const BPS = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(5))
 const TWO_BPS = JSBI.multiply(BPS, JSBI.BigInt(2))
 export abstract class SwapMath {
   /**
@@ -171,8 +171,8 @@ export abstract class SwapMath {
       }else {
         // deltaL = feeInBps * absDelta * / (currentSqrtP * 2)
         // Because nextSqrtP = (liquidity + absDelta / currentSqrtP) * currentSqrtP / (liquidity + deltaL)
-        // so we round up deltaL, to round down nextSqrtP
-        deltaL = FullMath.mulDivRoundingUp(
+        // so we round down deltaL, to round up nextSqrtP
+        deltaL = FullMath.mulDiv(
           Q96,
           JSBI.multiply(absAmount, fee),
           JSBI.multiply(TWO_BPS, sqrtRatioCurrentX96)

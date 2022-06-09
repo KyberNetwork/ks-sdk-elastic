@@ -1858,7 +1858,7 @@ var TickListDataProvider = /*#__PURE__*/function () {
   return TickListDataProvider;
 }();
 
-var BPS = /*#__PURE__*/JSBI.exponentiate( /*#__PURE__*/JSBI.BigInt(10), /*#__PURE__*/JSBI.BigInt(4));
+var BPS = /*#__PURE__*/JSBI.exponentiate( /*#__PURE__*/JSBI.BigInt(10), /*#__PURE__*/JSBI.BigInt(5));
 var TWO_BPS = /*#__PURE__*/JSBI.multiply(BPS, /*#__PURE__*/JSBI.BigInt(2));
 var SwapMath = /*#__PURE__*/function () {
   /**
@@ -1990,8 +1990,8 @@ var SwapMath = /*#__PURE__*/function () {
       } else {
         // deltaL = feeInBps * absDelta * / (currentSqrtP * 2)
         // Because nextSqrtP = (liquidity + absDelta / currentSqrtP) * currentSqrtP / (liquidity + deltaL)
-        // so we round up deltaL, to round down nextSqrtP
-        deltaL = FullMath.mulDivRoundingUp(Q96, JSBI.multiply(absAmount, fee), JSBI.multiply(TWO_BPS, sqrtRatioCurrentX96));
+        // so we round down deltaL, to round up nextSqrtP
+        deltaL = FullMath.mulDiv(Q96, JSBI.multiply(absAmount, fee), JSBI.multiply(TWO_BPS, sqrtRatioCurrentX96));
       }
     } else {
       // obtain the smaller root of the quadratic equation
