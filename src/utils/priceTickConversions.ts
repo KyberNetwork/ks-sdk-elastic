@@ -32,15 +32,41 @@ export function priceToClosestTick(price: Price<Token, Token>): number {
     ? encodeSqrtRatioX96(price.numerator, price.denominator)
     : encodeSqrtRatioX96(price.denominator, price.numerator)
   let tick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
+  const lower2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 2)
+  const lowerTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 1)
+  const tickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick)
   const nextTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick + 1)
-  if (sorted) {
-    if (!price.lessThan(nextTickPrice)) {
-      tick++
-    }
-  } else {
-    if (!price.greaterThan(nextTickPrice)) {
-      tick++
-    }
-  }
+  const next2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick + 2)
+
+  const nearestPrice = findNearestValue(price, [
+    lower2TickPrice,
+    lowerTickPrice,
+    tickPrice,
+    nextTickPrice,
+    next2TickPrice
+  ])
+
+  if (nearestPrice?.equalTo(lower2TickPrice)) return tick - 2
+  if (nearestPrice?.equalTo(lowerTickPrice)) return tick - 1
+  if (nearestPrice?.equalTo(tickPrice)) return tick
+  if (nearestPrice?.equalTo(nextTickPrice)) return tick + 1
+  if (nearestPrice?.equalTo(next2TickPrice)) return tick + 2
+
   return tick
+}
+
+const findNearestValue = (current: Price<Token, Token>, prices: Price<Token, Token>[]): Price<Token, Token> | null => {
+  if (!prices.length) return null
+  let best = prices[0]
+  prices.forEach(price => (best = findNearerValue(current, best, price)))
+  return best
+}
+
+const findNearerValue = (
+  current: Price<Token, Token>,
+  lower: Price<Token, Token>,
+  upper: Price<Token, Token>
+): Price<Token, Token> => {
+  const middle = upper.add(lower).divide(2)
+  return middle.lessThan(current) || middle.equalTo(current) ? upper : lower
 }

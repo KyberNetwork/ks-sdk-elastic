@@ -1579,20 +1579,33 @@ function priceToClosestTick(price) {
   var sorted = price.baseCurrency.sortsBefore(price.quoteCurrency);
   var sqrtRatioX96 = sorted ? encodeSqrtRatioX96(price.numerator, price.denominator) : encodeSqrtRatioX96(price.denominator, price.numerator);
   var tick = TickMath.getTickAtSqrtRatio(sqrtRatioX96);
+  var lower2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 2);
+  var lowerTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 1);
+  var tickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick);
   var nextTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick + 1);
-
-  if (sorted) {
-    if (!price.lessThan(nextTickPrice)) {
-      tick++;
-    }
-  } else {
-    if (!price.greaterThan(nextTickPrice)) {
-      tick++;
-    }
-  }
-
+  var next2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick + 2);
+  var nearestPrice = findNearestValue(price, [lower2TickPrice, lowerTickPrice, tickPrice, nextTickPrice, next2TickPrice]);
+  if (nearestPrice != null && nearestPrice.equalTo(lower2TickPrice)) return tick - 2;
+  if (nearestPrice != null && nearestPrice.equalTo(lowerTickPrice)) return tick - 1;
+  if (nearestPrice != null && nearestPrice.equalTo(tickPrice)) return tick;
+  if (nearestPrice != null && nearestPrice.equalTo(nextTickPrice)) return tick + 1;
+  if (nearestPrice != null && nearestPrice.equalTo(next2TickPrice)) return tick + 2;
   return tick;
 }
+
+var findNearestValue = function findNearestValue(current, prices) {
+  if (!prices.length) return null;
+  var best = prices[0];
+  prices.forEach(function (price) {
+    return best = findNearerValue(current, best, price);
+  });
+  return best;
+};
+
+var findNearerValue = function findNearerValue(current, lower, upper) {
+  var middle = upper.add(lower).divide(2);
+  return middle.lessThan(current) || middle.equalTo(current) ? upper : lower;
+};
 
 var MaxUint160 = /*#__PURE__*/JSBI.subtract( /*#__PURE__*/JSBI.exponentiate( /*#__PURE__*/JSBI.BigInt(2), /*#__PURE__*/JSBI.BigInt(160)), ONE);
 var MAX_FEE = /*#__PURE__*/JSBI.exponentiate( /*#__PURE__*/JSBI.BigInt(10), /*#__PURE__*/JSBI.BigInt(4));
