@@ -67,8 +67,6 @@ const findNearerValue = (
   lower: Price<Token, Token>,
   upper: Price<Token, Token>
 ): Price<Token, Token> => {
-  // false => near lower
-  // true: near upper
   const middle = upper.add(lower).divide(2)
   return middle.lessThan(current) || middle.equalTo(current) ? upper : lower
 }

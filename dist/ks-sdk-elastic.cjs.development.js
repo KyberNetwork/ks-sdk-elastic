@@ -1604,8 +1604,6 @@ var findNearestValue = function findNearestValue(current, prices) {
 };
 
 var findNearerValue = function findNearerValue(current, lower, upper) {
-  // false => near lower
-  // true: near upper
   var middle = upper.add(lower).divide(2);
   return middle.lessThan(current) || middle.equalTo(current) ? upper : lower;
 };
