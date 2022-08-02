@@ -21,9 +21,11 @@ export function tickToPrice(baseToken: Token, quoteToken: Token, tick: number): 
 }
 
 /**
- * Returns the first tick for which the given price is greater than or equal to the tick price
+ * Returns tick for which the given price is closest to the tick price
  * @param price for which to return the closest tick that represents a price less than or equal to the input price,
  * i.e. the price of the returned tick is less than or equal to the input price
+ *
+ * Solving this equation: `price = 1.0001 ^ tick` => tick = log_1.0001(price)
  */
 
 export function priceToClosestTick(price: Price<Token, Token>): number {
@@ -32,6 +34,7 @@ export function priceToClosestTick(price: Price<Token, Token>): number {
     ? encodeSqrtRatioX96(price.numerator, price.denominator)
     : encodeSqrtRatioX96(price.denominator, price.numerator)
   let tick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
+
   const lower2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 2)
   const lowerTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 1)
   const tickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick)
@@ -45,7 +48,6 @@ export function priceToClosestTick(price: Price<Token, Token>): number {
     nextTickPrice,
     next2TickPrice
   ])
-
   if (nearestPrice?.equalTo(lower2TickPrice)) return tick - 2
   if (nearestPrice?.equalTo(lowerTickPrice)) return tick - 1
   if (nearestPrice?.equalTo(tickPrice)) return tick
@@ -64,9 +66,11 @@ const findNearestValue = (current: Price<Token, Token>, prices: Price<Token, Tok
 
 const findNearerValue = (
   current: Price<Token, Token>,
-  lower: Price<Token, Token>,
-  upper: Price<Token, Token>
+  val1: Price<Token, Token>,
+  val2: Price<Token, Token>
 ): Price<Token, Token> => {
+  const lower = val1.lessThan(val2) ? val1 : val2
+  const upper = val1.lessThan(val2) ? val2 : val1
   const middle = upper.add(lower).divide(2)
   return middle.lessThan(current) || middle.equalTo(current) ? upper : lower
 }
