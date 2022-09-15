@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@kyberswap/ks-sdk-core'
+import { MaxUint256 } from '@namgold/ks-sdk-core'
 import { FeeAmount, MIN_LIQUIDITY } from '../constants'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'

@@ -1,4 +1,4 @@
-import { Percent, Token } from '@kyberswap/ks-sdk-core'
+import { Percent, Token } from '@namgold/ks-sdk-core'
 import JSBI from 'jsbi'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
@@ -19,7 +19,7 @@ describe('#_____', () => {
     const DAI = new Token(1, '0x5eD8BD53B0c3fa3dEaBd345430B1A3a6A4e8BD7C', 18, 'DAI', 'DAI Stablecoin')
     const POOL_SQRT_RATIO_START = JSBI.BigInt('1446478496690157252386646498') //mock pool when init, then = exact price at POOL_TICK_CURRENT
     const POOL_TICK_CURRENT = -80068
-    const DAI_ETH_POOL = new Pool(DAI, ETH, FeeAmount.LOW, POOL_SQRT_RATIO_START, 0, POOL_TICK_CURRENT, [])
+    const DAI_ETH_POOL = new Pool(DAI, ETH, FeeAmount.LOW, POOL_SQRT_RATIO_START, 0, 0, POOL_TICK_CURRENT, [])
 
     //x96_Lower = 1339151004338250763518426559
     //x96_Upper = 1584909661611945058891648556
@@ -47,7 +47,7 @@ describe('#_____', () => {
     const DAI = new Token(1, '0x5eD8BD53B0c3fa3dEaBd345430B1A3a6A4e8BD7C', 18, 'DAI', 'DAI Stablecoin')
     const POOL_SQRT_RATIO_START = JSBI.BigInt('1446478496690157252386646498')
     const POOL_TICK_CURRENT = -80068
-    const DAI_ETH_POOL = new Pool(DAI, ETH, FeeAmount.LOW, POOL_SQRT_RATIO_START, 0, POOL_TICK_CURRENT, [])
+    const DAI_ETH_POOL = new Pool(DAI, ETH, FeeAmount.LOW, POOL_SQRT_RATIO_START, 0, 0, POOL_TICK_CURRENT, [])
 
     //x96_Lower = 1339151004338250763518426559
     //x96_Upper = 1584909661611945058891648556

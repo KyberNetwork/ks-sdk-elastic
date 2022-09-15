@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@kyberswap/ks-sdk-core'
+import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@namgold/ks-sdk-core'
 import { encodeRouteToPath } from './utils'
 import { MethodParameters, toHex } from './utils/calldata'
 import { abi } from './abis/IProAmmQuoter.json'

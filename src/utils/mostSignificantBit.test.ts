@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@kyberswap/ks-sdk-core'
+import { MaxUint256 } from '@namgold/ks-sdk-core'
 import JSBI from 'jsbi'
 import { ONE } from '../internalConstants'
 import { mostSignificantBit } from './mostSignificantBit'

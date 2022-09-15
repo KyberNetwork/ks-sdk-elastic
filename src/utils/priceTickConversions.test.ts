@@ -1,4 +1,4 @@
-import { Price, Token } from '@kyberswap/ks-sdk-core'
+import { Price, Token } from '@namgold/ks-sdk-core'
 import { tickToPrice, priceToClosestTick } from './priceTickConversions'
 
 describe('priceTickConversions', () => {

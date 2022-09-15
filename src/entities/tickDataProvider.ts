@@ -1,4 +1,4 @@
-import { BigintIsh } from '@kyberswap/ks-sdk-core'
+import { BigintIsh } from '@namgold/ks-sdk-core'
 
 /**
  * Provides information about ticks
@@ -25,7 +25,7 @@ export interface TickDataProvider {
    * @param lte Whether the next tick should be lte the current tick
    * @param tickSpacing The tick spacing of the pool
    */
-   nextInitializedTickWithinFixedDistance(tick: number, lte: boolean, distance: number): Promise<[number, boolean]>
+  nextInitializedTickWithinFixedDistance(tick: number, lte: boolean, distance: number): Promise<[number, boolean]>
 }
 
 /**
@@ -45,7 +45,7 @@ export class NoTickDataProvider implements TickDataProvider {
   ): Promise<[number, boolean]> {
     throw new Error(NoTickDataProvider.ERROR_MESSAGE)
   }
-  
+
   async nextInitializedTickWithinFixedDistance(
     _tick: number,
     _lte: boolean,

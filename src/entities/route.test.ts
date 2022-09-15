@@ -1,4 +1,4 @@
-import { Ether, Token, WETH } from '@kyberswap/ks-sdk-core'
+import { Ether, Token, WETH } from '@namgold/ks-sdk-core'
 import { FeeAmount } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
 import { TickMath } from '../utils/tickMath'
@@ -12,9 +12,9 @@ describe('Route', () => {
   const token2 = new Token(1, '0x0000000000000000000000000000000000000003', 18, 't2')
   const weth = WETH[1]
 
-  const pool_0_1 = new Pool(token0, token1, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
-  const pool_0_weth = new Pool(token0, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
-  const pool_1_weth = new Pool(token1, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
+  const pool_0_1 = new Pool(token0, token1, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_0_weth = new Pool(token0, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_1_weth = new Pool(token1, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
 
   describe('path', () => {
     it('constructs a path from the tokens', () => {
@@ -61,6 +61,7 @@ describe('Route', () => {
       FeeAmount.MEDIUM,
       encodeSqrtRatioX96(1, 5),
       0,
+      0,
       TickMath.getTickAtSqrtRatio(encodeSqrtRatioX96(1, 5)),
       []
     )
@@ -69,6 +70,7 @@ describe('Route', () => {
       token2,
       FeeAmount.MEDIUM,
       encodeSqrtRatioX96(15, 30),
+      0,
       0,
       TickMath.getTickAtSqrtRatio(encodeSqrtRatioX96(15, 30)),
       []
@@ -79,6 +81,7 @@ describe('Route', () => {
       FeeAmount.MEDIUM,
       encodeSqrtRatioX96(3, 1),
       0,
+      0,
       TickMath.getTickAtSqrtRatio(encodeSqrtRatioX96(3, 1)),
       []
     )
@@ -87,6 +90,7 @@ describe('Route', () => {
       weth,
       FeeAmount.MEDIUM,
       encodeSqrtRatioX96(1, 7),
+      0,
       0,
       TickMath.getTickAtSqrtRatio(encodeSqrtRatioX96(1, 7)),
       []

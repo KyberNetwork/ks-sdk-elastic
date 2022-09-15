@@ -1,6 +1,6 @@
 {
-  "name": "@kyberswap/ks-sdk-elastic",
-  "version": "0.0.43",
+  "name": "@namgold/ks-sdk-elastic",
+  "version": "0.0.1",
   "repository": "git@github.com:tien7668/dmm-v3-sdk.git",
   "author": "tien7668 <tien7668@gmail.com>",
   "license": "MIT",
@@ -18,12 +18,10 @@
     "test": "tsdx test",
     "prepublishOnly": "tsdx build"
   },
-  "peerDependencies": {
-    "@kyberswap/ks-sdk-core": "^0.0.13"
-  },
   "dependencies": {
     "@ethersproject/abi": "^5.0.12",
     "@ethersproject/solidity": "^5.0.9",
+    "@namgold/ks-sdk-core": "~0.1.20",
     "@uniswap/v3-periphery": "^1.3.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3"

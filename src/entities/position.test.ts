@@ -1,4 +1,4 @@
-import { Percent, Token } from '@kyberswap/ks-sdk-core'
+import { Percent, Token } from '@namgold/ks-sdk-core'
 import JSBI from 'jsbi'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
@@ -15,7 +15,7 @@ describe('Position', () => {
   const POOL_SQRT_RATIO_START = encodeSqrtRatioX96(100e6, 100e18)
   const POOL_TICK_CURRENT = TickMath.getTickAtSqrtRatio(POOL_SQRT_RATIO_START)
   const TICK_SPACING = TICK_SPACINGS[FeeAmount.LOW]
-  const DAI_USDC_POOL = new Pool(DAI, USDC, FeeAmount.LOW, POOL_SQRT_RATIO_START, 0, POOL_TICK_CURRENT, [])
+  const DAI_USDC_POOL = new Pool(DAI, USDC, FeeAmount.LOW, POOL_SQRT_RATIO_START, 0, 0, POOL_TICK_CURRENT, [])
   it('can be constructed around 0 tick', () => {
     const position = new Position({
       pool: DAI_USDC_POOL,
@@ -250,7 +250,7 @@ describe('Position', () => {
         //=> L = L0 = ((79323393475916303018909 * 79283743674911602647011 /2^96) * 49949961958869841754182) / (79323393475916303018909 - 79283743674911602647011)
         //     = 99999999999999999968
 
-        // we have recalculated L, now we calcualte the minimum amount0 and minimum amount after sippage adjusted with the new L
+        // we have recalculated L, now we calculate the minimum amount0 and minimum amount after slippage adjusted with the new L
         // poolLower is pool where currentX96 -= slippage
         // poolUpper is pool where currentX96 +== slippage
         // Returns the minimum amounts that must be sent in order to safely mint the amount of liquidity held by the position
@@ -344,8 +344,8 @@ describe('Position', () => {
         //                  Q96                                                 Q96
         // roundUp = true <=> amount0  roundUP after / X96(B), then after / X96(B)
         //                    amount1  roundUP after / Q96
-        // amount0 quotien = 120054069145287995769396, roundUp => 120054069145287995769397
-        // amount1 quotien =  79831926242, roundUp => 79831926243
+        // amount0 quotient = 120054069145287995769396, roundUp => 120054069145287995769397
+        // amount1 quotient =  79831926242, roundUp => 79831926243
 
         //Recalculate L maxLiquidityForAmounts(X96(current), X96(A), X96(B), amount0, amount1)
         //        amount0 . P.Pb                  amount1*Q96
@@ -358,7 +358,7 @@ describe('Position', () => {
         //L1 = 100000000001083227176
         //=> L = min = 99999999999999999976
 
-        // we have recalculated L, now we calcualte the minimum amount0 and minimum amount after sippage adjusted with the new L
+        // we have recalculated L, now we calculate the minimum amount0 and minimum amount after slippage adjusted with the new L
         // poolLower is pool where currentX96 -= slippage
         // poolUpper is pool where currentX96 +== slippage
         // token0Price = [6277101735386680763835638836457564104275292849, 6277101735386680763835789423207666416102355444464034512896]
@@ -407,7 +407,7 @@ describe('Position', () => {
 
       it('is correct for pool at min price', () => {
         const position = new Position({
-          pool: new Pool(DAI, USDC, FeeAmount.LOW, TickMath.MIN_SQRT_RATIO, 0, TickMath.MIN_TICK, []),
+          pool: new Pool(DAI, USDC, FeeAmount.LOW, TickMath.MIN_SQRT_RATIO, 0, 0, TickMath.MIN_TICK, []),
           liquidity: 100e18,
           tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
           tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2
@@ -425,6 +425,7 @@ describe('Position', () => {
             USDC,
             FeeAmount.LOW,
             JSBI.subtract(TickMath.MAX_SQRT_RATIO, JSBI.BigInt(1)),
+            0,
             0,
             TickMath.MAX_TICK - 1,
             []
@@ -530,7 +531,7 @@ describe('Position', () => {
 
       it('is correct for pool at min price', () => {
         const position = new Position({
-          pool: new Pool(DAI, USDC, FeeAmount.LOW, TickMath.MIN_SQRT_RATIO, 0, TickMath.MIN_TICK, []),
+          pool: new Pool(DAI, USDC, FeeAmount.LOW, TickMath.MIN_SQRT_RATIO, 0, 0, TickMath.MIN_TICK, []),
           liquidity: 100e18,
           tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
           tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2
@@ -548,6 +549,7 @@ describe('Position', () => {
             USDC,
             FeeAmount.LOW,
             JSBI.subtract(TickMath.MAX_SQRT_RATIO, JSBI.BigInt(1)),
+            0,
             0,
             TickMath.MAX_TICK - 1,
             []
