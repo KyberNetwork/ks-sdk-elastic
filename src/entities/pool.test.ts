@@ -238,14 +238,14 @@ describe('Pool', () => {
       //tickCurrent = 0
       //currentX96 = encodeSqrtRatioX96(1, 1)
       //liquid = ONE_ETHER
-      pool = new Pool(USDC, DAI, FeeAmount.LOW, encodeSqrtRatioX96(1, 1), ONE_ETHER, 0, 0, [
+      pool = new Pool(USDC, DAI, FeeAmount.F5, encodeSqrtRatioX96(1, 1), ONE_ETHER, 0, 0, [
         {
-          index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.LOW]),
+          index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.F5]),
           liquidityNet: ONE_ETHER,
           liquidityGross: ONE_ETHER
         },
         {
-          index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.LOW]),
+          index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.F5]),
           liquidityNet: JSBI.multiply(ONE_ETHER, NEGATIVE_ONE),
           liquidityGross: ONE_ETHER
         }
@@ -349,11 +349,12 @@ describe('Pool', () => {
         //                            2**96 * (100 * 5)
         //                = _________________________________________
         //                     20000 * 81152542391008068215614429470
-        //                = 1
+        //                = 1 // wrong
+        //                = 0 (fix: RoundDown deltaL)
         // step2.sqrtRatioNextX96 = SwapMath.calcFinalPrice(
         //                                  100                             , // step2.usedAmount = 100
         //                                  10**18 + 6073827545048          , // state.baseL + state.reinvestL
-        //                                  1                               , // deltaL 
+        //                                  0                               , // deltaL 
         //                                  81152542391008068215614429470   , // state.sqrtPriceX96
         //                                  true                            , // exactIn
         //                                  false                           , // !zeroForOne
@@ -362,33 +363,33 @@ describe('Pool', () => {
         //                        10**18 + 6073827545048 + _________________________________
         //                                                  81152542391008068215614429470  
         //                   =    ________________________________________________________________ * 81152542391008068215614429470
-        //                                10**18 + 6073827545048 + 1
-        //                    = 81152542391008076006211180266
-        // --> state.sqrtPriceX96 = step1.sqrtRatioNextX96 = 81152542391008076006211180266
+        //                                10**18 + 6073827545048 + 0
+        //                    = 81152542391008076087363229753
+        // --> state.sqrtPriceX96 = step1.sqrtRatioNextX96 = 81152542391008076087363229753
         //    step2.amountOut = SwapMath.calcReturnedAmount(
         //                                81152542391008068215614429470, // currentPrice = state.sqrtPriceX96
-        //                                81152542391008076006211180266, // targetPrice = step2.sqrtRatioNextX96
+        //                                81152542391008076087363229753, // targetPrice = step2.sqrtRatioNextX96
         //                                10**18 + 6073827545048       , // liquidity
-        //                                1                            , // deltaL  
+        //                                0                            , // deltaL  
         //                                true                         , // exactIn
         //                                false                        , // !zeroForOne
         //                          ) RoundUp
-        //                      = (10**18 + 6073827545048 + 1) * 2**96      (10**18 + 6073827545048) * 2**96
+        //                      = (10**18 + 6073827545048 + 0) * 2**96      (10**18 + 6073827545048) * 2**96
         //                        _____________________________________ - _________________________________
-        //                          81152542391008076006211180266           81152542391008068215614429470
-        //                      = -93
+        //                          81152542391008076087363229753           81152542391008068215614429470
+        //                      = -95
         // state = {
         //   amountSpecifiedRemaining: 0 //  100 - step2.amountIn = 100 - 100,
-        //   amountCalculated: -23707188978482193, // -23707188978482100 + step2.amount = -23707188978482100 + (-93)
+        //   amountCalculated: -23707188978482195, // -23707188978482100 + step2.amount = -23707188978482100 + (-95)
         //   baseL: 10**18, // = ONE_ETHER
-        //   reinvestL: 6073827545048, // 6073827545048 + 1
-        //   sqrtPriceX96: 81152542391008076006211180266, // step2.sqrtRatioNextX96
+        //   reinvestL: 6073827545048, // 6073827545048 + 0
+        //   sqrtPriceX96: 81152542391008076087363229753, // step2.sqrtRatioNextX96
         //   tick: 480 // last step -> tick = tick at sqrtPriceX96 81152542391008076006211180266
         // }
         const inputAmount = CurrencyAmount.fromRawAmount(USDC, JSBI.BigInt('24295310180196433'))
         const [outputAmount] = await pool.getOutputAmountProMM(inputAmount)
         expect(outputAmount.currency.equals(DAI)).toBe(true)
-        expect(outputAmount.quotient).toEqual(JSBI.BigInt('23707188978482193'))
+        expect(outputAmount.quotient).toEqual(JSBI.BigInt('23707188978482195'))
       })
 
       it('TickMath.getSqrtRatioAtTick', async () => {
