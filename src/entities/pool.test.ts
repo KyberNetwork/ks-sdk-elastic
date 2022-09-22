@@ -233,18 +233,19 @@ describe('Pool', () => {
 
   describe('swaps_PROMM', () => {
     let pool: Pool
+    const FEE_AMOUNT = 50
     beforeEach(() => {
       //tickCurrent = 0
       //currentX96 = encodeSqrtRatioX96(1, 1)
       //liquid = ONE_ETHER
-      pool = new Pool(USDC, DAI, FeeAmount.F5, encodeSqrtRatioX96(1, 1), ONE_ETHER, 0, 0, [
+      pool = new Pool(USDC, DAI, FEE_AMOUNT, encodeSqrtRatioX96(1, 1), ONE_ETHER, 0, 0, [
         {
-          index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.F5]),
+          index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FEE_AMOUNT]),
           liquidityNet: ONE_ETHER,
           liquidityGross: ONE_ETHER
         },
         {
-          index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.F5]),
+          index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FEE_AMOUNT]),
           liquidityNet: JSBI.multiply(ONE_ETHER, NEGATIVE_ONE),
           liquidityGross: ONE_ETHER
         }

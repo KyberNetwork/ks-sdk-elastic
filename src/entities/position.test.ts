@@ -9,13 +9,15 @@ import { Position } from './position'
 
 import { maxLiquidityForAmounts } from '../utils/maxLiquidityForAmounts'
 
+const FEE_AMOUNT = 50
+
 describe('Position', () => {
   const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
   const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
   const POOL_SQRT_RATIO_START = encodeSqrtRatioX96(100e6, 100e18)
   const POOL_TICK_CURRENT = TickMath.getTickAtSqrtRatio(POOL_SQRT_RATIO_START)
-  const TICK_SPACING = TICK_SPACINGS[FeeAmount.F5]
-  const DAI_USDC_POOL = new Pool(DAI, USDC, FeeAmount.F5, POOL_SQRT_RATIO_START, 0, 0, 0, POOL_TICK_CURRENT, [])
+  const TICK_SPACING = TICK_SPACINGS[FEE_AMOUNT]
+  const DAI_USDC_POOL = new Pool(DAI, USDC, FEE_AMOUNT, POOL_SQRT_RATIO_START, 0, 0, POOL_TICK_CURRENT, [])
   it('can be constructed around 0 tick', () => {
     const position = new Position({
       pool: DAI_USDC_POOL,
@@ -407,7 +409,7 @@ describe('Position', () => {
 
       it('is correct for pool at min price', () => {
         const position = new Position({
-          pool: new Pool(DAI, USDC, FeeAmount.F5, TickMath.MIN_SQRT_RATIO, 0, 0, 0, TickMath.MIN_TICK, []),
+          pool: new Pool(DAI, USDC, FEE_AMOUNT, TickMath.MIN_SQRT_RATIO, 0, 0, TickMath.MIN_TICK, []),
           liquidity: 100e18,
           tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
           tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2
@@ -423,7 +425,7 @@ describe('Position', () => {
           pool: new Pool(
             DAI,
             USDC,
-            FeeAmount.F5,
+            FEE_AMOUNT,
             JSBI.subtract(TickMath.MAX_SQRT_RATIO, JSBI.BigInt(1)),
             0,
             0,
@@ -531,7 +533,7 @@ describe('Position', () => {
 
       it('is correct for pool at min price', () => {
         const position = new Position({
-          pool: new Pool(DAI, USDC, FeeAmount.F5, TickMath.MIN_SQRT_RATIO, 0, 0, 0, TickMath.MIN_TICK, []),
+          pool: new Pool(DAI, USDC, FEE_AMOUNT, TickMath.MIN_SQRT_RATIO, 0, 0, TickMath.MIN_TICK, []),
           liquidity: 100e18,
           tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
           tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2
@@ -547,7 +549,7 @@ describe('Position', () => {
           pool: new Pool(
             DAI,
             USDC,
-            FeeAmount.F5,
+            FEE_AMOUNT,
             JSBI.subtract(TickMath.MAX_SQRT_RATIO, JSBI.BigInt(1)),
             0,
             0,
