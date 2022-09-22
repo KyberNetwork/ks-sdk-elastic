@@ -7,7 +7,7 @@ import { FullMath } from './fullMath'
 
 const MaxUint160 = JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(160)), ONE)
 
-const MAX_FEE = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(4))
+const MAX_FEE = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(5))
 
 function multiplyIn256(x: JSBI, y: JSBI): JSBI {
   const product = JSBI.multiply(x, y)
