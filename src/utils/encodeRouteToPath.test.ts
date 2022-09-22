@@ -14,10 +14,10 @@ describe('#encodeRouteToPath', () => {
 
   const weth = WETH[1]
 
-  const pool_0_1_medium = new Pool(token0, token1, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
-  const pool_1_2_low = new Pool(token1, token2, FeeAmount.LOW, encodeSqrtRatioX96(1, 1), 0, 0, [])
-  const pool_0_weth = new Pool(token0, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
-  const pool_1_weth = new Pool(token1, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
+  const pool_0_1_medium = new Pool(token0, token1, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_1_2_low = new Pool(token1, token2, FeeAmount.LOW, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_0_weth = new Pool(token0, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_1_weth = new Pool(token1, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
 
   const route_0_1 = new Route([pool_0_1_medium], token0, token1)
   const route_0_1_2 = new Route([pool_0_1_medium, pool_1_2_low], token0, token2)
@@ -28,68 +28,72 @@ describe('#encodeRouteToPath', () => {
   const route_weth_0_1 = new Route([pool_0_weth, pool_0_1_medium], ETHER, token1)
 
   it('packs them for exact input single hop', () => {
+    // t0: 0x0000000000000000000000000000000000000001 
+    // fee medium: 00012c = 300
+    // fee low   : 000028 = 40
+    // t1: 0x0000000000000000000000000000000000000002
     expect(encodeRouteToPath(route_0_1, false)).toEqual(
-      '0x000000000000000000000000000000000000000100001e0000000000000000000000000000000000000002'
+      '0x000000000000000000000000000000000000000100012c0000000000000000000000000000000000000002'
     )
   })
 
   it('packs them correctly for exact output single hop', () => {
     expect(encodeRouteToPath(route_0_1, true)).toEqual(
-      '0x000000000000000000000000000000000000000200001e0000000000000000000000000000000000000001'
+      '0x000000000000000000000000000000000000000200012c0000000000000000000000000000000000000001'
     )
   })
 
   it('packs them correctly for multihop exact input', () => {
     expect(encodeRouteToPath(route_0_1_2, false)).toEqual(
-      '0x000000000000000000000000000000000000000100001e00000000000000000000000000000000000000020000050000000000000000000000000000000000000003'
+      '0x000000000000000000000000000000000000000100012c00000000000000000000000000000000000000020000280000000000000000000000000000000000000003'
     )
   })
 
   it('packs them correctly for multihop exact output', () => {
     expect(encodeRouteToPath(route_0_1_2, true)).toEqual(
-      '0x0000000000000000000000000000000000000003000005000000000000000000000000000000000000000200001e0000000000000000000000000000000000000001'
+      '0x0000000000000000000000000000000000000003000028000000000000000000000000000000000000000200012c0000000000000000000000000000000000000001'
     )
   })
 
   it('wraps ether input for exact input single hop', () => {
     expect(encodeRouteToPath(route_weth_0, false)).toEqual(
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200001e0000000000000000000000000000000000000001'
+      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200012c0000000000000000000000000000000000000001'
     )
   })
   it('wraps ether input for exact output single hop', () => {
     expect(encodeRouteToPath(route_weth_0, true)).toEqual(
-      '0x000000000000000000000000000000000000000100001ec02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+      '0x000000000000000000000000000000000000000100012cc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     )
   })
   it('wraps ether input for exact input multihop', () => {
     expect(encodeRouteToPath(route_weth_0_1, false)).toEqual(
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200001e000000000000000000000000000000000000000100001e0000000000000000000000000000000000000002'
+      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200012c000000000000000000000000000000000000000100012c0000000000000000000000000000000000000002'
     )
   })
   it('wraps ether input for exact output multihop', () => {
     expect(encodeRouteToPath(route_weth_0_1, true)).toEqual(
-      '0x000000000000000000000000000000000000000200001e000000000000000000000000000000000000000100001ec02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+      '0x000000000000000000000000000000000000000200012c000000000000000000000000000000000000000100012cc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     )
   })
 
   it('wraps ether output for exact input single hop', () => {
     expect(encodeRouteToPath(route_0_weth, false)).toEqual(
-      '0x000000000000000000000000000000000000000100001ec02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+      '0x000000000000000000000000000000000000000100012cc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     )
   })
   it('wraps ether output for exact output single hop', () => {
     expect(encodeRouteToPath(route_0_weth, true)).toEqual(
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200001e0000000000000000000000000000000000000001'
+      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200012c0000000000000000000000000000000000000001'
     )
   })
   it('wraps ether output for exact input multihop', () => {
     expect(encodeRouteToPath(route_0_1_weth, false)).toEqual(
-      '0x000000000000000000000000000000000000000100001e000000000000000000000000000000000000000200001ec02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+      '0x000000000000000000000000000000000000000100012c000000000000000000000000000000000000000200012cc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     )
   })
   it('wraps ether output for exact output multihop', () => {
     expect(encodeRouteToPath(route_0_1_weth, true)).toEqual(
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200001e000000000000000000000000000000000000000200001e0000000000000000000000000000000000000001'
+      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc200012c000000000000000000000000000000000000000200012c0000000000000000000000000000000000000001'
     )
   })
 })
