@@ -1,5 +1,5 @@
 import JSBI from 'jsbi'
-import { BigintIsh, Price, Token, CurrencyAmount } from '@namgold/ks-sdk-core'
+import { BigintIsh, Price, Token, CurrencyAmount } from '@kyberswap/ks-sdk-core'
 import { FACTORY_ADDRESS, FeeAmount, TICK_SPACINGS } from '../constants'
 import { computePoolAddress } from '../utils/computePoolAddress'
 import { NoTickDataProvider, TickDataProvider } from './tickDataProvider'

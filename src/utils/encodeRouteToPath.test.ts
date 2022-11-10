@@ -1,4 +1,4 @@
-import { Ether, Token, WETH } from '@namgold/ks-sdk-core'
+import { Ether, Token, WETH } from '@kyberswap/ks-sdk-core'
 import { FeeAmount } from '../constants'
 import { Pool } from '../entities/pool'
 import { Route } from '../entities/route'
@@ -28,7 +28,7 @@ describe('#encodeRouteToPath', () => {
   const route_weth_0_1 = new Route([pool_0_weth, pool_0_1_medium], ETHER, token1)
 
   it('packs them for exact input single hop', () => {
-    // t0: 0x0000000000000000000000000000000000000001 
+    // t0: 0x0000000000000000000000000000000000000001
     // fee medium: 00012c = 300
     // fee low   : 000028 = 40
     // t1: 0x0000000000000000000000000000000000000002

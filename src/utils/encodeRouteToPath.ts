@@ -1,5 +1,5 @@
 import { pack } from '@ethersproject/solidity'
-import { Currency, Token } from '@namgold/ks-sdk-core'
+import { Currency, Token } from '@kyberswap/ks-sdk-core'
 import { Pool } from '../entities/pool'
 import { Route } from '../entities/route'
 

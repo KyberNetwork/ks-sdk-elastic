@@ -7,7 +7,7 @@ import {
   CurrencyAmount,
   TradeType,
   Token
-} from '@namgold/ks-sdk-core'
+} from '@kyberswap/ks-sdk-core'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../internalConstants'
 import { Pool } from './pool'

@@ -1333,10 +1333,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@namgold/ks-sdk-core@~0.1.27":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@namgold/ks-sdk-core/-/ks-sdk-core-0.1.27.tgz#c250e18c9ae7b50582356d9d5d9e159949b204f3"
-  integrity sha512-Lj27ErrPwSpexbBZrZRKegQV0WXl6gnrWvEEG9D0A+VJVtLuutpk3SRLoqu7UMV/MsiYu7pHRVtECQHTyDCCDw==
+"@kyberswap/ks-sdk-core@^1.0.0-rc.1":
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@kyberswap/ks-sdk-core/-/ks-sdk-core-1.0.0-rc.1.tgz#261629643ddc88a7fae567c4c4d0c385788a4c4d"
+  integrity sha512-BeItlnktI0OhaDOrNw6exupd8fFre+uTVTy9IeqXmhfw6r9E18oC6aOMcWaKMF109R0ayDPG40woLfqCFlX+pw==
   dependencies:
     "@ethersproject/address" "^5.0.2"
     "@solana/web3.js" "^1.66.2"

@@ -1,4 +1,4 @@
-import { BigintIsh } from '@namgold/ks-sdk-core'
+import { BigintIsh } from '@kyberswap/ks-sdk-core'
 import { TickList } from '../utils/tickList'
 import { Tick, TickConstructorArgs } from './tick'
 import { TickDataProvider } from './tickDataProvider'
