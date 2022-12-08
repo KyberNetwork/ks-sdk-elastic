@@ -19,8 +19,12 @@ export class TickListDataProvider implements TickDataProvider {
   async nextInitializedTickWithinOneWord(tick: number, lte: boolean, tickSpacing: number): Promise<[number, boolean]> {
     return TickList.nextInitializedTickWithinOneWord(this.ticks, tick, lte, tickSpacing)
   }
-  
-  async nextInitializedTickWithinFixedDistance(tick: number, lte: boolean, distance: number): Promise<[number, boolean]> {
+
+  async nextInitializedTickWithinFixedDistance(
+    tick: number,
+    lte: boolean,
+    distance: number
+  ): Promise<[number, boolean]> {
     return TickList.nextInitializedTickWithinFixedDistance(this.ticks, tick, lte, distance)
   }
 }

@@ -1,12 +1,4 @@
-import {
-  BigintIsh,
-  Percent,
-  Token,
-  CurrencyAmount,
-  validateAndParseAddress,
-  Currency,
-  NativeCurrency
-} from '@kyberswap/ks-sdk-core'
+import { BigintIsh, Percent, Token, CurrencyAmount, Currency, NativeCurrency } from '@kyberswap/ks-sdk-core'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { Position } from './entities/position'
@@ -18,8 +10,8 @@ import { abi } from './abis/IProAmmAntiSnipPositionManager.json'
 import { Pool } from 'entities/pool'
 import { Payments } from './payments'
 import { Multicall } from './multicall'
-import { ADDRESS_ZERO } from './constants'
-import { SqrtPriceMath } from '.'
+import { SqrtPriceMath } from './utils/sqrtPriceMath'
+import { validateAndParseAddress } from './utils/validateAndParseAddress'
 
 const MaxUint128 = toHex(JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)), JSBI.BigInt(1)))
 

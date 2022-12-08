@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@kyberswap/ks-sdk-core'
+import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType } from '@kyberswap/ks-sdk-core'
 import invariant from 'tiny-invariant'
 import { Trade } from './entities/trade'
 import { ADDRESS_ZERO } from './constants'
@@ -9,6 +9,7 @@ import { MethodParameters, toHex } from './utils/calldata'
 import { abi } from './abis/IProAmmRouter.json'
 import { Multicall } from './multicall'
 import { FeeOptions, Payments } from './payments'
+import { validateAndParseAddress } from './utils/validateAndParseAddress'
 
 /**
  * Options for producing the arguments to send calls to the router.

@@ -1,8 +1,9 @@
 import { Interface } from '@ethersproject/abi'
-import { Percent, Token, validateAndParseAddress } from '@kyberswap/ks-sdk-core'
+import { Percent, Token } from '@kyberswap/ks-sdk-core'
 import JSBI from 'jsbi'
 import { toHex } from './utils/calldata'
 import { abi } from './abis/IProAmmRouterTokenHelperWithFee.json'
+import { validateAndParseAddress } from './utils/validateAndParseAddress'
 export interface FeeOptions {
   /**
    * The percent of the output that will be taken as a fee.

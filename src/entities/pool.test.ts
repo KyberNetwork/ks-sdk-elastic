@@ -196,7 +196,7 @@ describe('Pool', () => {
     //  tickNext = nextInitializedTickWithinOneWord(tick = tickCurrent = 0,
     //                                              lte = zeroForOne = false,
     //                                              tickSpacing = TICK_SPACINGS[FeeAmount.LOW])
-    //  tickNext = 2^8 * 10 - 1 = 2559  
+    //  tickNext = 2^8 * 10 - 1 = 2559
     //  zeroForOne . as long as swaping token 0->1, X96 of token 0 come to 0, then sqrtPriceLimitX96 = MIN_SQRT_RATIO is the limit
     //  !zeroForOne . as long as swaping token 0->1, X96 of token 0 come to infinity, then sqrtPriceLimitX96 = MAX_SQRT_RATIO is the limit
     //  next96 = 90041927759339286931870012045
@@ -231,21 +231,21 @@ describe('Pool', () => {
     })
   })
 
-
   describe('swaps_PROMM', () => {
     let pool: Pool
+    const FEE_AMOUNT = 50
     beforeEach(() => {
       //tickCurrent = 0
       //currentX96 = encodeSqrtRatioX96(1, 1)
       //liquid = ONE_ETHER
-      pool = new Pool(USDC, DAI, FeeAmount.F5, encodeSqrtRatioX96(1, 1), ONE_ETHER, 0, 0, [
+      pool = new Pool(USDC, DAI, FEE_AMOUNT, encodeSqrtRatioX96(1, 1), ONE_ETHER, 0, 0, [
         {
-          index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.F5]),
+          index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FEE_AMOUNT]),
           liquidityNet: ONE_ETHER,
           liquidityGross: ONE_ETHER
         },
         {
-          index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.F5]),
+          index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FEE_AMOUNT]),
           liquidityNet: JSBI.multiply(ONE_ETHER, NEGATIVE_ONE),
           liquidityGross: ONE_ETHER
         }
@@ -255,7 +255,7 @@ describe('Pool', () => {
     describe('#getOutputAmount', () => {
       it('USDC -> DAI', async () => {
         // token 0 = DAI => zeroForOne=false
-        // amount = 24295310180196433 > 0 => exactIn 
+        // amount = 24295310180196433 > 0 => exactIn
         // no priceLimit + !zeroForOne => priceLimit = TickMath.MAX_SQRT_RATIO - 1
         // !isToken0 && isExactInput -> amountIn = amount1 —> swap 1->0 —> price0 = qty1/qty0 increase -> willUpTick
 
@@ -264,10 +264,9 @@ describe('Pool', () => {
         //   amountCalculated: 0,
         //   baseL: 10**18, // = ONE_ETHER
         //   reinvestL: 0,
-        //   sqrtPriceX96: 79228162514264337593543950336, // encodeSqrtRatioX96(1, 1) = Q96 
+        //   sqrtPriceX96: 79228162514264337593543950336, // encodeSqrtRatioX96(1, 1) = Q96
         //   tick: 0
         // }
-
 
         // step1 =  {
         //   tickNext: 480, // min(state.tick + 480 , next_initialized_tick) = 480
@@ -285,7 +284,7 @@ describe('Pool', () => {
         //                     ) RoundDown
         //                      10**18 * 20000 * (81152542391008068215614429470 - 79228162514264337593543950336)
         //                      ________________________________________________________________________________ * 79228162514264337593543950336
-        //                          20000 * 79228162514264337593543950336 - 5 * 81152542391008068215614429470   
+        //                          20000 * 79228162514264337593543950336 - 5 * 81152542391008068215614429470
         //                  = _________________________________________________________________________________________________________________
         //                                                                            Q96
         //                  = 24295310180196333
@@ -311,7 +310,7 @@ describe('Pool', () => {
         //                                79228162514264337593543950336, // currentPrice = state.sqrtPriceX96
         //                                81152542391008068215614429470, // targetPrice = step1.sqrtRatioNextX96
         //                                10**18,                      , // liquidity
-        //                                6073827545048                , // deltaL  
+        //                                6073827545048                , // deltaL
         //                                true                         , // exactIn
         //                                false                        , // !zeroForOne
         //                          ) RoundUp
@@ -325,9 +324,8 @@ describe('Pool', () => {
         //   baseL: 10**18, // = ONE_ETHER
         //   reinvestL: 6073827545048, // 0 + step1.deltaL
         //   sqrtPriceX96: 81152542391008068215614429470, // step1.sqrtRatioNextX96
-        //   tick: 480 // not last step + not initialized + !zeroForOne -> tick = step1.tickNext = 480 
+        //   tick: 480 // not last step + not initialized + !zeroForOne -> tick = step1.tickNext = 480
         // }
-
 
         // step2 =  {
         //   tickNext: 960, // min(state.tick + 480 , next_initialized_tick) = 960
@@ -335,7 +333,7 @@ describe('Pool', () => {
         //   sqrtPriceNextX96: 83123663701510905396168601196 // TickMath.getSqrtRatioAtTick(step.tickNext)
         // }
 
-        // step2.usedAmount = .... > state.amountSpecifiedRemaining = 100 -> last step 
+        // step2.usedAmount = .... > state.amountSpecifiedRemaining = 100 -> last step
         // --> LAST STEP
         // step2.usedAmount = step2.amountIn = state.amountSpecifiedRemaining = 100
         // step2.deltaL = SwapMath.estimateIncrementalLiquidity(
@@ -354,14 +352,14 @@ describe('Pool', () => {
         // step2.sqrtRatioNextX96 = SwapMath.calcFinalPrice(
         //                                  100                             , // step2.usedAmount = 100
         //                                  10**18 + 6073827545048          , // state.baseL + state.reinvestL
-        //                                  0                               , // deltaL 
+        //                                  0                               , // deltaL
         //                                  81152542391008068215614429470   , // state.sqrtPriceX96
         //                                  true                            , // exactIn
         //                                  false                           , // !zeroForOne
         //                           )
         //                                                  100 * 2**96
         //                        10**18 + 6073827545048 + _________________________________
-        //                                                  81152542391008068215614429470  
+        //                                                  81152542391008068215614429470
         //                   =    ________________________________________________________________ * 81152542391008068215614429470
         //                                10**18 + 6073827545048 + 0
         //                    = 81152542391008076087363229753
@@ -370,7 +368,7 @@ describe('Pool', () => {
         //                                81152542391008068215614429470, // currentPrice = state.sqrtPriceX96
         //                                81152542391008076087363229753, // targetPrice = step2.sqrtRatioNextX96
         //                                10**18 + 6073827545048       , // liquidity
-        //                                0                            , // deltaL  
+        //                                0                            , // deltaL
         //                                true                         , // exactIn
         //                                false                        , // !zeroForOne
         //                          ) RoundUp

@@ -12,20 +12,19 @@ export enum FeeAmount {
   LOWEST = 10,
   LOW = 40,
   MEDIUM = 300,
-  HIGH = 1000,
-  F5 = 50
+  HIGH = 1000
 }
 
 /**
  * The default factory tick spacings by fee amount.
  */
-export const TICK_SPACINGS: { [amount in FeeAmount]: number } = {
+export const TICK_SPACINGS: { [amount in FeeAmount]: number } & Record<string, number> = {
   [FeeAmount.STABLE]: 1,
   [FeeAmount.LOWEST]: 1,
   [FeeAmount.LOW]: 8,
   [FeeAmount.MEDIUM]: 60,
-  [FeeAmount.HIGH]: 200, 
-  [FeeAmount.F5]: 10
-}
+  [FeeAmount.HIGH]: 200,
+  '50': 10 //for legacy unittest
+} as const
 
 export const MIN_LIQUIDITY = 100000
