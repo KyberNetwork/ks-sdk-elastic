@@ -15,7 +15,7 @@ describe('Pool', () => {
   describe('constructor', () => {
     it('cannot be used for tokens on different chains', () => {
       expect(() => {
-        new Pool(USDC, WETH[3], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+        new Pool(USDC, WETH[5], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
       }).toThrow('CHAIN_IDS')
     })
 

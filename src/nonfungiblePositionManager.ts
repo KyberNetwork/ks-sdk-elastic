@@ -201,166 +201,108 @@ export abstract class NonfungiblePositionManager {
   }
 
   public static addCallParameters(
-    position: Position,
+    position: Position | Position[],
     ticksPrevious: number[],
     options: AddLiquidityOptions
   ): MethodParameters {
-    invariant(JSBI.greaterThan(position.liquidity, ZERO), 'ZERO_LIQUIDITY')
+    const positions = Array.isArray(position) ? position : [position]
+    if (isMint(options) && options.createPool) {
+      invariant(positions.length === 1, 'CREATE_POOL_ONLY_ACCEPT_ONE_POSITION')
+    }
+
+    positions.forEach(p => {
+      invariant(JSBI.greaterThan(p.liquidity, ZERO), 'ZERO_LIQUIDITY')
+    })
 
     const calldatas: string[] = []
-    // get amounts
-    const { amount0: amount0Desired, amount1: amount1Desired } = position.mintAmounts
-    // adjust for slippage
-    const minimumAmounts = position.mintAmountsWithSlippage(options.slippageTolerance)
-    const amount0Min = toHex(minimumAmounts.amount0)
-    const amount1Min = toHex(minimumAmounts.amount1)
+    let value = JSBI.BigInt(0)
+    let refundValue = JSBI.BigInt(0)
 
-    const deadline = toHex(options.deadline)
-    // create pool if needed
-    if (isMint(options) && options.createPool) {
-      calldatas.push(this.encodeCreate(position.pool))
-    }
-    // permits if necessary
-    // if (options.token0Permit) {
-    //   calldatas.push(SelfPermit.encodePermit(position.pool.token0, options.token0Permit))
-    // }
-    // if (options.token1Permit) {
-    //   calldatas.push(SelfPermit.encodePermit(position.pool.token1, options.token1Permit))
-    // }
-    // mint
-    if (isMint(options)) {
-      const recipient: string = validateAndParseAddress(options.recipient)
-      calldatas.push(
-        NonfungiblePositionManager.INTERFACE.encodeFunctionData('mint', [
-          {
-            token0: position.pool.token0.address,
-            token1: position.pool.token1.address,
-            fee: position.pool.fee,
-            tickLower: position.tickLower,
-            tickUpper: position.tickUpper,
-            ticksPrevious: ticksPrevious,
-            amount0Desired: toHex(amount0Desired),
-            amount1Desired: toHex(amount1Desired),
-            amount0Min,
-            amount1Min,
-            recipient,
-            deadline
-          }
-        ])
-      )
-    } else {
-      // increase
-      calldatas.push(
-        NonfungiblePositionManager.INTERFACE.encodeFunctionData('addLiquidity', [
-          {
-            tokenId: toHex(options.tokenId),
-            amount0Desired: toHex(amount0Desired),
-            amount1Desired: toHex(amount1Desired),
-            amount0Min,
-            amount1Min,
-            deadline
-          }
-        ])
-      )
-    }
-    let value: string = toHex(0)
-    if (options.useNative) {
-      const wrapped = options.useNative.wrapped
-      invariant(position.pool.token0.equals(wrapped) || position.pool.token1.equals(wrapped), 'NO_WETH')
+    positions.forEach(p => {
+      // get amounts
+      const { amount0: amount0Desired, amount1: amount1Desired } = p.mintAmounts
+      // adjust for slippage
+      const minimumAmounts = p.mintAmountsWithSlippage(options.slippageTolerance)
+      const amount0Min = toHex(minimumAmounts.amount0)
+      const amount1Min = toHex(minimumAmounts.amount1)
 
-      const wrappedValue = position.pool.token0.equals(wrapped) ? amount0Desired : amount1Desired
-
-      // we only need to refund if we're actually sending ETH
-      if (JSBI.greaterThan(wrappedValue, ZERO)) {
-        calldatas.push(Payments.encodeRefundETH())
-      }
-
+      const deadline = toHex(options.deadline)
+      // create pool if needed
       if (isMint(options) && options.createPool) {
-        const ethUnlock = position.pool.token0.equals(wrapped)
-          ? SqrtPriceMath.getAmount0Unlock(position.pool.sqrtRatioX96)
-          : SqrtPriceMath.getAmount1Unlock(position.pool.sqrtRatioX96)
-        value = toHex(JSBI.add(wrappedValue, ethUnlock))
-      } else value = toHex(wrappedValue)
-    }
-    return {
-      calldata: Multicall.encodeMulticall(calldatas),
-      value
-    }
-  }
-
-  public static addCallParametersUnuse(position: Position, options: AddLiquidityOptions): MethodParameters {
-    invariant(JSBI.greaterThan(position.liquidity, ZERO), 'ZERO_LIQUIDITY')
-
-    const calldatas: string[] = []
-    // get amounts
-    const { amount0: amount0Desired, amount1: amount1Desired } = position.mintAmounts
-    // adjust for slippage
-    const minimumAmounts = position.mintAmountsWithSlippage(options.slippageTolerance)
-    const amount0Min = toHex(minimumAmounts.amount0)
-    const amount1Min = toHex(minimumAmounts.amount1)
-
-    const deadline = toHex(options.deadline)
-    // create pool if needed
-    if (isMint(options) && options.createPool) {
-      calldatas.push(this.encodeCreate(position.pool))
-    }
-    // permits if necessary
-    // if (options.token0Permit) {
-    //   calldatas.push(SelfPermit.encodePermit(position.pool.token0, options.token0Permit))
-    // }
-    // if (options.token1Permit) {
-    //   calldatas.push(SelfPermit.encodePermit(position.pool.token1, options.token1Permit))
-    // }
-    // mint
-    if (isMint(options)) {
-      const recipient: string = validateAndParseAddress(options.recipient)
-      calldatas.push(
-        NonfungiblePositionManager.INTERFACE.encodeFunctionData('mint', [
-          {
-            token0: position.pool.token0.address,
-            token1: position.pool.token1.address,
-            fee: position.pool.fee,
-            tickLower: position.tickLower,
-            tickUpper: position.tickUpper,
-            amount0Desired: toHex(amount0Desired),
-            amount1Desired: toHex(amount1Desired),
-            amount0Min,
-            amount1Min,
-            recipient,
-            deadline
-          }
-        ])
-      )
-    } else {
-      // increase
-      calldatas.push(
-        NonfungiblePositionManager.INTERFACE.encodeFunctionData('increaseLiquidity', [
-          {
-            tokenId: toHex(options.tokenId),
-            amount0Desired: toHex(amount0Desired),
-            amount1Desired: toHex(amount1Desired),
-            amount0Min,
-            amount1Min,
-            deadline
-          }
-        ])
-      )
-    }
-    let value: string = toHex(0)
-    if (options.useNative) {
-      const wrapped = options.useNative.wrapped
-      invariant(position.pool.token0.equals(wrapped) || position.pool.token1.equals(wrapped), 'NO_WETH')
-
-      const wrappedValue = position.pool.token0.equals(wrapped) ? amount0Desired : amount1Desired
-      // we only need to refund if we're actually sending ETH
-      if (JSBI.greaterThan(wrappedValue, ZERO)) {
-        calldatas.push(Payments.encodeRefundETH())
+        calldatas.push(this.encodeCreate(p.pool))
       }
-      value = toHex(wrappedValue)
+      // permits if necessary
+      // if (options.token0Permit) {
+      //   calldatas.push(SelfPermit.encodePermit(position.pool.token0, options.token0Permit))
+      // }
+      // if (options.token1Permit) {
+      //   calldatas.push(SelfPermit.encodePermit(position.pool.token1, options.token1Permit))
+      // }
+      // mint
+      if (isMint(options)) {
+        const recipient: string = validateAndParseAddress(options.recipient)
+        calldatas.push(
+          NonfungiblePositionManager.INTERFACE.encodeFunctionData('mint', [
+            {
+              token0: p.pool.token0.address,
+              token1: p.pool.token1.address,
+              fee: p.pool.fee,
+              tickLower: p.tickLower,
+              tickUpper: p.tickUpper,
+              ticksPrevious: ticksPrevious,
+              amount0Desired: toHex(amount0Desired),
+              amount1Desired: toHex(amount1Desired),
+              amount0Min,
+              amount1Min,
+              recipient,
+              deadline
+            }
+          ])
+        )
+      } else {
+        // increase
+        calldatas.push(
+          NonfungiblePositionManager.INTERFACE.encodeFunctionData('addLiquidity', [
+            {
+              tokenId: toHex(options.tokenId),
+              amount0Desired: toHex(amount0Desired),
+              amount1Desired: toHex(amount1Desired),
+              amount0Min,
+              amount1Min,
+              deadline
+            }
+          ])
+        )
+      }
+
+      if (options.useNative) {
+        const wrapped = options.useNative.wrapped
+        invariant(p.pool.token0.equals(wrapped) || p.pool.token1.equals(wrapped), 'NO_WETH')
+
+        const wrappedValue = p.pool.token0.equals(wrapped) ? amount0Desired : amount1Desired
+
+        // we only need to refund if we're actually sending ETH
+        if (JSBI.greaterThan(wrappedValue, ZERO)) {
+          // calldatas.push(Payments.encodeRefundETH())
+          refundValue = JSBI.add(refundValue, wrappedValue)
+        }
+
+        if (isMint(options) && options.createPool) {
+          const ethUnlock = p.pool.token0.equals(wrapped)
+            ? SqrtPriceMath.getAmount0Unlock(p.pool.sqrtRatioX96)
+            : SqrtPriceMath.getAmount1Unlock(p.pool.sqrtRatioX96)
+          value = JSBI.add(value, JSBI.add(wrappedValue, ethUnlock))
+        } else value = JSBI.add(wrappedValue, value)
+      }
+    })
+
+    if (JSBI.greaterThan(refundValue, ZERO)) {
+      calldatas.push(Payments.encodeRefundETH())
     }
+
     return {
       calldata: Multicall.encodeMulticall(calldatas),
-      value
+      value: toHex(value)
     }
   }
 
