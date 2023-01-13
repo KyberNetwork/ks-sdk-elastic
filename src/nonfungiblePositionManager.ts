@@ -121,6 +121,11 @@ export interface CollectOptions {
   isRemovingLiquid?: boolean
 
   havingFee?: boolean
+
+  /**
+   * If position is closed, don't remove 1 liquidity when collect fee
+   */
+  isPositionClosed?: boolean
 }
 
 export interface NFTPermitOptions {
@@ -319,7 +324,7 @@ export abstract class NonfungiblePositionManager {
     const deadline = toHex(options.deadline)
 
     //remove a small amount to update the RTokens
-    if (!options.isRemovingLiquid) {
+    if (!options.isRemovingLiquid && !options.isPositionClosed) {
       calldatas.push(
         NonfungiblePositionManager.INTERFACE.encodeFunctionData('removeLiquidity', [
           {
