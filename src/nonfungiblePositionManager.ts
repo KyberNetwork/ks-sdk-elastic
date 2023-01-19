@@ -207,7 +207,7 @@ export abstract class NonfungiblePositionManager {
 
   public static addCallParameters(
     position: Position | Position[],
-    ticksPrevious: number[],
+    ticks: number[] | number[][],
     options: AddLiquidityOptions
   ): MethodParameters {
     const positions = Array.isArray(position) ? position : [position]
@@ -215,6 +215,9 @@ export abstract class NonfungiblePositionManager {
       invariant(positions.length === 1, 'CREATE_POOL_ONLY_ACCEPT_ONE_POSITION')
     }
 
+    const ticksPrevious = Array.isArray(ticks[0]) ? ticks : [ticks]
+
+    invariant(positions.length === ticksPrevious.length, 'POSITIONS_AND_TICK_PREVIOUS_NOT_SAME_SIZE')
     positions.forEach(p => {
       invariant(JSBI.greaterThan(p.liquidity, ZERO), 'ZERO_LIQUIDITY')
     })
@@ -223,7 +226,7 @@ export abstract class NonfungiblePositionManager {
     let value = JSBI.BigInt(0)
     let refundValue = JSBI.BigInt(0)
 
-    positions.forEach(p => {
+    positions.forEach((p, index) => {
       // get amounts
       const { amount0: amount0Desired, amount1: amount1Desired } = p.mintAmounts
       // adjust for slippage
@@ -254,7 +257,7 @@ export abstract class NonfungiblePositionManager {
               fee: p.pool.fee,
               tickLower: p.tickLower,
               tickUpper: p.tickUpper,
-              ticksPrevious: ticksPrevious,
+              ticksPrevious: ticksPrevious[index],
               amount0Desired: toHex(amount0Desired),
               amount1Desired: toHex(amount1Desired),
               amount0Min,
