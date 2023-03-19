@@ -8,23 +8,32 @@ export const POOL_INIT_CODE_HASH = '0xd71790a46dff0e075392efbd706356cd5a822a782f
  * The default factory enabled fee amounts, denominated in hundredths of bips.
  */
 export enum FeeAmount {
-  STABLE = 8,
-  LOWEST = 10,
-  LOW = 40,
-  MEDIUM = 300,
-  HIGH = 1000
+  VERY_STABLE = 8,
+  VERY_STABLE1 = 10,
+  VERY_STABLE2 = 20,
+  STABLE = 40,
+  MOST_PAIR = 100,
+  MOST_PAIR1 = 250,
+  MOST_PAIR2 = 300,
+  EXOTIC = 1000,
+  VOLATILE = 2000,
+  RARE = 5000
 }
 
 /**
  * The default factory tick spacings by fee amount.
  */
-export const TICK_SPACINGS: { [amount in FeeAmount]: number } & Record<string, number> = {
-  [FeeAmount.STABLE]: 1,
-  [FeeAmount.LOWEST]: 1,
-  [FeeAmount.LOW]: 8,
-  [FeeAmount.MEDIUM]: 60,
-  [FeeAmount.HIGH]: 200,
-  '50': 10 //for legacy unittest
+export const TICK_SPACINGS: { [amount in FeeAmount]: number } = {
+  [FeeAmount.VERY_STABLE]: 1,
+  [FeeAmount.VERY_STABLE1]: 1,
+  [FeeAmount.VERY_STABLE2]: 2,
+  [FeeAmount.STABLE]: 8,
+  [FeeAmount.MOST_PAIR]: 10,
+  [FeeAmount.MOST_PAIR1]: 25,
+  [FeeAmount.MOST_PAIR2]: 60,
+  [FeeAmount.EXOTIC]: 200,
+  [FeeAmount.VOLATILE]: 100,
+  [FeeAmount.RARE]: 100
 } as const
 
 export const MIN_LIQUIDITY = 100000

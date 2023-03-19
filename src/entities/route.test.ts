@@ -12,9 +12,9 @@ describe('Route', () => {
   const token2 = new Token(1, '0x0000000000000000000000000000000000000003', 18, 't2')
   const weth = WETH[1]
 
-  const pool_0_1 = new Pool(token0, token1, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
-  const pool_0_weth = new Pool(token0, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
-  const pool_1_weth = new Pool(token1, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_0_1 = new Pool(token0, token1, FeeAmount.MOST_PAIR, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_0_weth = new Pool(token0, weth, FeeAmount.MOST_PAIR, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
+  const pool_1_weth = new Pool(token1, weth, FeeAmount.MOST_PAIR, encodeSqrtRatioX96(1, 1), 0, 0, 0, [])
 
   describe('path', () => {
     it('constructs a path from the tokens', () => {
@@ -58,7 +58,7 @@ describe('Route', () => {
     const pool_0_1 = new Pool(
       token0,
       token1,
-      FeeAmount.MEDIUM,
+      FeeAmount.MOST_PAIR,
       encodeSqrtRatioX96(1, 5),
       0,
       0,
@@ -68,7 +68,7 @@ describe('Route', () => {
     const pool_1_2 = new Pool(
       token1,
       token2,
-      FeeAmount.MEDIUM,
+      FeeAmount.MOST_PAIR,
       encodeSqrtRatioX96(15, 30),
       0,
       0,
@@ -78,7 +78,7 @@ describe('Route', () => {
     const pool_0_weth = new Pool(
       token0,
       weth,
-      FeeAmount.MEDIUM,
+      FeeAmount.MOST_PAIR,
       encodeSqrtRatioX96(3, 1),
       0,
       0,
@@ -88,7 +88,7 @@ describe('Route', () => {
     const pool_1_weth = new Pool(
       token1,
       weth,
-      FeeAmount.MEDIUM,
+      FeeAmount.MOST_PAIR,
       encodeSqrtRatioX96(1, 7),
       0,
       0,
