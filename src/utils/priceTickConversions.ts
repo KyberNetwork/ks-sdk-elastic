@@ -35,11 +35,11 @@ export function priceToClosestTick(price: Price<Token, Token>): number {
     : encodeSqrtRatioX96(price.denominator, price.numerator)
   let tick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
 
-  const lower2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 2)
-  const lowerTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick - 1)
+  const lower2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, getCorrectTick(tick - 2))
+  const lowerTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, getCorrectTick(tick - 1))
   const tickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick)
-  const nextTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick + 1)
-  const next2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, tick + 2)
+  const nextTickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, getCorrectTick(tick + 1))
+  const next2TickPrice = tickToPrice(price.baseCurrency, price.quoteCurrency, getCorrectTick(tick + 2))
 
   const nearestPrice = findNearestValue(price, [
     lower2TickPrice,
@@ -48,13 +48,19 @@ export function priceToClosestTick(price: Price<Token, Token>): number {
     nextTickPrice,
     next2TickPrice
   ])
-  if (nearestPrice?.equalTo(lower2TickPrice)) return tick - 2
-  if (nearestPrice?.equalTo(lowerTickPrice)) return tick - 1
+  if (nearestPrice?.equalTo(lower2TickPrice)) return getCorrectTick(tick - 2)
+  if (nearestPrice?.equalTo(lowerTickPrice)) return getCorrectTick(tick - 1)
   if (nearestPrice?.equalTo(tickPrice)) return tick
-  if (nearestPrice?.equalTo(nextTickPrice)) return tick + 1
-  if (nearestPrice?.equalTo(next2TickPrice)) return tick + 2
+  if (nearestPrice?.equalTo(nextTickPrice)) return getCorrectTick(tick + 1)
+  if (nearestPrice?.equalTo(next2TickPrice)) return getCorrectTick(tick + 2)
 
   return tick
+}
+
+const getCorrectTick = (value: number) => {
+  if (value < TickMath.MIN_TICK) return TickMath.MIN_TICK
+  if (value > TickMath.MAX_TICK) return TickMath.MAX_TICK
+  return value
 }
 
 const findNearestValue = (current: Price<Token, Token>, prices: Price<Token, Token>[]): Price<Token, Token> | null => {
