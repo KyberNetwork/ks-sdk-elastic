@@ -273,6 +273,7 @@ export abstract class NonfungiblePositionManager {
           NonfungiblePositionManager.INTERFACE.encodeFunctionData('addLiquidity', [
             {
               tokenId: toHex(options.tokenId),
+              ticksPrevious: ticksPrevious[index],
               amount0Desired: toHex(amount0Desired),
               amount1Desired: toHex(amount1Desired),
               amount0Min,

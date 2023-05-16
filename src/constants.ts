@@ -36,4 +36,4 @@ export const TICK_SPACINGS: { [amount in FeeAmount]: number } = {
   [FeeAmount.RARE]: 100
 } as const
 
-export const MIN_LIQUIDITY = 100000
+export const MIN_LIQUIDITY = 100
