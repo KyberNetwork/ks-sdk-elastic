@@ -329,17 +329,7 @@ export abstract class NonfungiblePositionManager {
 
     //remove a small amount to update the RTokens
     if (!options.isRemovingLiquid && !options.isPositionClosed) {
-      calldatas.push(
-        NonfungiblePositionManager.INTERFACE.encodeFunctionData('removeLiquidity', [
-          {
-            tokenId,
-            liquidity: '0x1',
-            amount0Min: 0,
-            amount1Min: 0,
-            deadline
-          }
-        ])
-      )
+      calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('syncFeeGrowth', [tokenId]))
     }
 
     if (options.havingFee) {

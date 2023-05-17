@@ -1,6 +1,6 @@
 {
   "name": "@kyberswap/ks-sdk-elastic",
-  "version": "1.1.0-rc",
+  "version": "1.1.0-rc2",
   "repository": "git@github.com:KyberNetwork/ks-sdk-elastic.git",
   "author": "tien7668 <tien7668@gmail.com>",
   "license": "MIT",
