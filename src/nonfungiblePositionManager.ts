@@ -126,6 +126,11 @@ export interface CollectOptions {
    * If position is closed, don't remove 1 liquidity when collect fee
    */
   isPositionClosed?: boolean
+
+  /**
+   * Support for legacy contract which dont have syncFeeGrowth
+   * */
+  legacyMode?: boolean
 }
 
 export interface NFTPermitOptions {
@@ -327,9 +332,22 @@ export abstract class NonfungiblePositionManager {
 
     const deadline = toHex(options.deadline)
 
-    //remove a small amount to update the RTokens
     if (!options.isRemovingLiquid && !options.isPositionClosed) {
-      calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('syncFeeGrowth', [tokenId]))
+      if (!options.legacyMode)
+        calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('syncFeeGrowth', [tokenId]))
+      else
+        calldatas.push(
+          //remove a small amount to update the RTokens
+          NonfungiblePositionManager.INTERFACE.encodeFunctionData('removeLiquidity', [
+            {
+              tokenId,
+              liquidity: '0x1',
+              amount0Min: 0,
+              amount1Min: 0,
+              deadline
+            }
+          ])
+        )
     }
 
     if (options.havingFee) {
