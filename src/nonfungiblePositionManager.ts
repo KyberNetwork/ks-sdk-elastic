@@ -419,7 +419,7 @@ export abstract class NonfungiblePositionManager {
 
     const deadline = toHex(options.deadline)
     const tokenId = toHex(options.tokenId)
-    console.log(position)
+
     // construct a partial position with a percentage of liquidity
     const partialPosition = new Position({
       pool: position.pool,
